@@ -18,11 +18,8 @@ passport.deserializeUser(function (user, done) {
     done(null, user);
 });
 
-//var CALLBACK_URL = "http://localhost:8000/login/callback";
 var CALLBACK_URL = "https://authenticationtest492.herokuapp.com/login/callback";
-
 var ENTRY_POINT = "https://idp.testshib.org/idp/profile/SAML2/Redirect/SSO";
-//var ENTRY_POINT = "https://idp.testshib.org/idp/Authn/UserPassword";
 var ISSUER = "localhost";
 
 var samlStrategy = new saml.Strategy({
@@ -87,7 +84,7 @@ app.get('/login',
 app.post('/login/callback',
     passport.authenticate('saml', { failureRedirect: '/login/fail' }),
     function (req, res) {
-        console.log(req);
+        console.log(req["issuer"]);
         res.redirect('/');
     }
 );
