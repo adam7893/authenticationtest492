@@ -50,15 +50,15 @@ passport.use(samlStrategy);
 var app = express();
 
 app.use(cookieParser());
-//app.use(bodyParser());
-//app.use(session({secret: process.env.SESSION_SECRET}));
+app.use(bodyParser());
+app.use(session({secret: "secret"}));
 app.use(passport.initialize());
 app.use(passport.session());
 
 function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
         console.log("You are authenticated");
-        return next;
+        return next();
     }
     else {
         return res.redirect('/login');
@@ -85,9 +85,10 @@ app.get('/login',
 );
 
 app.post('/login/callback',
-    function(req, res) {
-        res.redirect('/');
-    }
+   passport.authenticate('saml', { failureRedirect: '/login/fail' }),
+  function(req, res) {
+    res.redirect('/');
+  }
 );
 
 app.get('/login/fail',
