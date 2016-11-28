@@ -57,6 +57,7 @@ app.use(passport.session());
 
 function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
+        console.log("You are authenticated");
         return next;
     }
     else {
@@ -85,7 +86,6 @@ app.get('/login',
 
 app.post('/login/callback',
     function(req, res) {
-        console.log("here");
         res.redirect('/');
     }
 );
