@@ -87,6 +87,7 @@ app.get('/login',
 app.post('/login/callback',
     passport.authenticate('saml', { failureRedirect: '/login/fail' }),
     function (req, res) {
+        console.log(req);
         res.redirect('/');
     }
 );
@@ -104,6 +105,7 @@ app.get('/Shibboleth.sso/Metadata',
     }
 );
 
+// TODO: figure out logout
 app.get('/logout', function (req, res) {
     req.session.destroy(function (err) {
         res.redirect('/'); //Inside a callback… bulletproof!
