@@ -22,6 +22,25 @@ var CALLBACK_URL = "https://authenticationtest492.herokuapp.com/login/callback";
 var ENTRY_POINT = "https://idp.testshib.org/idp/profile/SAML2/Redirect/SSO";
 var ISSUER = "localhost";
 
+/* TODO: figure out how to ask for only specific attributes
+
+    Possibly something akin to the following?
+
+passport.use(samlStrategy,
+    function (profile, done) {
+        return done(null,
+            {
+                id: profile.uid,
+                email: profile.email,
+                displayName: profile.cn,
+                firstName: profile.givenName,
+                lastName: profile.sn
+            });
+    });
+
+    */
+
+
 var samlStrategy = new saml.Strategy({
     // URL that goes from the Identity Provider -> Service Provider
     callbackUrl: CALLBACK_URL,
@@ -84,7 +103,11 @@ app.get('/login',
 app.post('/login/callback',
     passport.authenticate('saml', { failureRedirect: '/login/fail' }),
     function (req, res) {
-        console.log(req["user"]);
+        /*
+            User information in: req["user"]
+        
+         */
+        //console.log(req["user"]);
         res.redirect('/');
     }
 );
@@ -102,7 +125,11 @@ app.get('/Shibboleth.sso/Metadata',
     }
 );
 
-// TODO: figure out logout
+/* TODO: figure out logout
+        Possibly has to do something with cookies?
+
+        This currently doesn't work
+*/
 app.get('/logout', function (req, res) {
     req.session.destroy(function (err) {
         res.redirect('/'); //Inside a callback… bulletproof!
