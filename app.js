@@ -104,6 +104,11 @@ app.get('/Shibboleth.sso/Metadata',
     }
 );
 
+app.get('/logout', function(req, res){
+  req.logout();
+  res.redirect('/');
+});
+
 //general error handler
 app.use(function(err, req, res, next) {
     console.log("Fatal error: " + JSON.stringify(err));
