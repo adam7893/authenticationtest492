@@ -83,11 +83,6 @@ app.get('/login',
     }
 );
 
-app.get('/login/callback',
-    function(req, res) {
-        res.redirect('/');
-    })
-
 app.post('/login/callback',
     function(req, res) {
         console.log("here");
