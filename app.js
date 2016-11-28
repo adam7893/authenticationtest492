@@ -65,11 +65,16 @@ function ensureAuthenticated(req, res, next) {
 }
 
 app.get('/',
-    ensureAuthenticated,
     function(req, res) {
-        res.send('Authenticated');
+        res.send('Home');
     }
 );
+
+app.get('/secure',
+    ensureAuthenticated,
+    function(req, res) {
+        res.send("Authenticated");
+    })
 
 app.get('/login',
     passport.authenticate('saml', { failureRedirect: '/login/fail' }),
@@ -105,7 +110,7 @@ app.use(function(err, req, res, next) {
     next(err);
 });
 
-var port = 80;
+var port = process.env.PORT || 8000;
 var server = app.listen(port, function() {
     console.log('Listening on port %d', server.address().port)
 });
