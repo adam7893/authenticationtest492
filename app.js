@@ -84,7 +84,7 @@ app.get('/login',
 app.post('/login/callback',
     passport.authenticate('saml', { failureRedirect: '/login/fail' }),
     function (req, res) {
-        console.log(JSON.stringify(req)["issuer"]);
+        console.log(JSON.stringify(req));
         res.redirect('/');
     }
 );
