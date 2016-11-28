@@ -19,7 +19,7 @@ passport.deserializeUser(function(user, done) {
 });
 
 //var CALLBACK_URL = "http://localhost:8000/login/callback";
-var CALLBACK_URL = "";
+var CALLBACK_URL = "https://authenticationtest492.herokuapp.com/login/callback";
 
 var ENTRY_POINT = "https://idp.testshib.org/idp/profile/SAML2/Redirect/SSO";
 //var ENTRY_POINT = "https://idp.testshib.org/idp/Authn/UserPassword";
