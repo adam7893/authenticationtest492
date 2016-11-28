@@ -10,11 +10,11 @@ var saml = require('passport-saml');
 
 dotenv.load();
 
-passport.serializeUser(function(user, done) {
+passport.serializeUser(function (user, done) {
     done(null, user);
 });
 
-passport.deserializeUser(function(user, done) {
+passport.deserializeUser(function (user, done) {
     done(null, user);
 });
 
@@ -41,7 +41,7 @@ var samlStrategy = new saml.Strategy({
     cert: fs.readFileSync(__dirname + '/cert/idp_cert.pem', 'utf8'),
     validateInResponseTo: false,
     disableRequestedAuthnContext: true
-}, function(profile, done) {
+}, function (profile, done) {
     return done(null, profile);
 });
 
@@ -51,7 +51,7 @@ var app = express();
 
 app.use(cookieParser());
 app.use(bodyParser());
-app.use(session({secret: "secret"}));
+app.use(session({ secret: "secret" }));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -66,56 +66,57 @@ function ensureAuthenticated(req, res, next) {
 }
 
 app.get('/',
-    function(req, res) {
+    function (req, res) {
         res.send('Home');
     }
 );
 
 app.get('/secure',
     ensureAuthenticated,
-    function(req, res) {
+    function (req, res) {
         res.send("Authenticated");
     })
 
 app.get('/login',
     passport.authenticate('saml', { failureRedirect: '/login/fail' }),
-    function(req, res) {
+    function (req, res) {
         res.redirect('/');
     }
 );
 
 app.post('/login/callback',
-   passport.authenticate('saml', { failureRedirect: '/login/fail' }),
-  function(req, res) {
-    res.redirect('/');
-  }
+    passport.authenticate('saml', { failureRedirect: '/login/fail' }),
+    function (req, res) {
+        res.redirect('/');
+    }
 );
 
 app.get('/login/fail',
-    function(req, res) {
+    function (req, res) {
         res.status(401).send('Login failed');
     }
 );
 
 app.get('/Shibboleth.sso/Metadata',
-    function(req, res) {
+    function (req, res) {
         res.type('application/xml');
         res.status(200).send(samlStrategy.generateServiceProviderMetadata(fs.readFileSync(__dirname + '/cert/cert.pem', 'utf8')));
     }
 );
 
-app.get('/logout', function(req, res){
-  req.logout();
-  res.redirect('/');
+app.get('/logout', function (req, res) {
+    req.session.destroy(function (err) {
+        res.redirect('/'); //Inside a callback… bulletproof!
+    });
 });
 
 //general error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
     console.log("Fatal error: " + JSON.stringify(err));
     next(err);
 });
 
 var port = process.env.PORT || 8000;
-var server = app.listen(port, function() {
+var server = app.listen(port, function () {
     console.log('Listening on port %d', server.address().port)
 });
