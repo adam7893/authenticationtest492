@@ -63,11 +63,11 @@ var samlStrategy = new saml.Strategy({
     validateInResponseTo: false,
     disableRequestedAuthnContext: true
 }, function (profile, done) {
-        var user = u;
+        //var user = u;
 
-        user.saml = {};
-        user.saml.nameID = profile.nameID;
-        user.saml.nameIDFormat = profile.nameIDFormat;
+        u.saml = {};
+        u.saml.nameID = profile.nameID;
+        u.saml.nameIDFormat = profile.nameIDFormat;
         return done(null, profile);
 });
 
