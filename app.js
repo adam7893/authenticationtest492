@@ -65,6 +65,7 @@ var samlStrategy = new saml.Strategy({
 }, function (profile, done) {
         variable.nameID = profile.nameID;
         variable.nameIDFormat = profile.nameIDFormat;
+        return done(null, profile);
 });
 
 passport.use(samlStrategy);
