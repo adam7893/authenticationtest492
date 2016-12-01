@@ -155,12 +155,14 @@ passport.logoutSaml = function(req, res) {
     });
 };
 
-app.post('/auth/saml/logout/callback', passport.logoutSamlCallback);
-
 passport.logoutSamlCallback = function(req, res){
     req.logout();
     res.redirect('/');
 }
+
+app.post('/auth/saml/logout/callback', passport.logoutSamlCallback);
+
+
 
 
 
