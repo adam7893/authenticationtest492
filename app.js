@@ -22,6 +22,8 @@ var CALLBACK_URL = "https://authenticationtest492.herokuapp.com/login/callback";
 var ENTRY_POINT = "https://idp.testshib.org/idp/profile/SAML2/Redirect/SSO";
 var ISSUER = "localhost";
 
+var LOGOUT_URL = "https://www.testshib.org/Shibboleth.sso/Logout";
+
 /* TODO: figure out how to ask for only specific attributes
 
     Possibly something akin to the following?
@@ -48,6 +50,7 @@ var samlStrategy = new saml.Strategy({
     entryPoint: ENTRY_POINT,
     // Usually specified as `/shibboleth` from site root
     issuer: ISSUER,
+    logoutUrl: LOGOUT_URL,
     identifierFormat: null,
     // Service Provider private key
     decryptionPvk: fs.readFileSync(__dirname + '/cert/key.pem', 'utf8'),
@@ -130,12 +133,36 @@ app.get('/Shibboleth.sso/Metadata',
 
         This currently doesn't work
 */
+/*
 app.get('/logout', function (req, res) {
     req.session.destroy(function (err) {
         req.logout();
         res.redirect('/'); //Inside a callback… bulletproof!
     });
-});
+});*/
+
+passport.logoutSaml = function(req, res) {
+    //Here add the nameID and nameIDFormat to the user if you stored it someplace.
+    req.user.nameID = req.user.saml.nameID;
+    req.user.nameIDFormat = req.user.saml.nameIDFormat;
+
+
+    samlStrategy.logout(req, function(err, request){
+        if(!err){
+            //redirect to the IdP Logout URL
+            res.redirect(request);
+        }
+    });
+};
+
+app.post('/auth/saml/logout/callback', passport.logoutSamlCallback);
+
+passport.logoutSamlCallback = function(req, res){
+    req.logout();
+    res.redirect('/');
+}
+
+
 
 //general error handler
 app.use(function (err, req, res, next) {
