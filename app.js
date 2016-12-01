@@ -10,7 +10,10 @@ var saml = require('passport-saml');
 
 dotenv.load();
 
+var u;
+
 passport.serializeUser(function (user, done) {
+    u = user;
     done(null, user);
 });
 
@@ -42,8 +45,6 @@ passport.use(samlStrategy,
 
     */
 
-var u = {};
-
 var samlStrategy = new saml.Strategy({
     // URL that goes from the Identity Provider -> Service Provider
     callbackUrl: CALLBACK_URL,
@@ -62,14 +63,11 @@ var samlStrategy = new saml.Strategy({
     validateInResponseTo: false,
     disableRequestedAuthnContext: true
 }, function (profile, done) {
-    /*
+        var user = u;
+
         user.saml = {};
         user.saml.nameID = profile.nameID;
         user.saml.nameIDFormat = profile.nameIDFormat;
-        */
-
-        u.nameID = profile.nameID;
-        u.nameIDFormat = profile.nameIDFormat;
         return done(null, profile);
 });
 
@@ -152,8 +150,8 @@ app.get('/logout', function (req, res) {
 
 passport.logoutSaml = function(req, res) {
     //Here add the nameID and nameIDFormat to the user if you stored it someplace.
-    req.user.nameID = u.nameID;
-    req.user.nameIDFormat = u.nameIDFormat;
+    req.user.nameID = req.user.saml.nameID;
+    req.user.nameIDFormat = req.user.saml.nameIDFormat;
 
     samlStrategy.logout(req, function(err, request){
         if(!err){
