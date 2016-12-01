@@ -132,6 +132,7 @@ app.get('/Shibboleth.sso/Metadata',
 */
 app.get('/logout', function (req, res) {
     req.session.destroy(function (err) {
+        req.logout();
         res.redirect('/'); //Inside a callback… bulletproof!
     });
 });
@@ -146,3 +147,5 @@ var port = process.env.PORT || 8000;
 var server = app.listen(port, function () {
     console.log('Listening on port %d', server.address().port)
 });
+
+//Masters
