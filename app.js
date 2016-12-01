@@ -11,8 +11,7 @@ var saml = require('passport-saml');
 dotenv.load();
 
 passport.serializeUser(function (user, done) {
-          user.saml = {};
-    done(null, user);
+    done(null, user.saml);
 });
 
 passport.deserializeUser(function (user, done) {
@@ -64,9 +63,9 @@ var samlStrategy = new saml.Strategy({
     validateInResponseTo: false,
     disableRequestedAuthnContext: true
 }, function (profile, done) {
-
-      user.saml.nameID = profile.nameID;
-      user.saml.nameIDFormat = profile.nameIDFormat;
+        user.saml = {};
+        user.saml.nameID = profile.nameID;
+        user.saml.nameIDFormat = profile.nameIDFormat;
         return done(null, profile);
 });
 
