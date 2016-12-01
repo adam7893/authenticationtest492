@@ -42,7 +42,7 @@ passport.use(samlStrategy,
 
     */
 
-var saml = {};
+var variable = {};
 
 
 var samlStrategy = new saml.Strategy({
@@ -63,8 +63,8 @@ var samlStrategy = new saml.Strategy({
     validateInResponseTo: false,
     disableRequestedAuthnContext: true
 }, function (profile, done) {
-        saml.nameID = profile.nameID;
-        saml.nameIDFormat = profile.nameIDFormat;
+        variable.nameID = profile.nameID;
+        variable.nameIDFormat = profile.nameIDFormat;
 });
 
 passport.use(samlStrategy);
@@ -146,8 +146,8 @@ app.get('/logout', function (req, res) {
 
 passport.logoutSaml = function(req, res) {
     //Here add the nameID and nameIDFormat to the user if you stored it someplace.
-        req.user.nameID = saml.nameID;
-    req.user.nameIDFormat = saml.nameIDFormat;
+        req.user.nameID = variable.nameID;
+    req.user.nameIDFormat = variable.nameIDFormat;
 
     samlStrategy.logout(req, function(err, request){
         if(!err){
