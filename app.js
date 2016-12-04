@@ -178,6 +178,7 @@ app.get('/logout', function (req, res) {
     res.redirect('https://testshib.org/Shibboleth.sso/Logout');*/
 
     req.session.destroy( function() {
+        req.logout();
         res.redirect('https://testshib.org/Shibboleth.sso/Logout');
     });
 
