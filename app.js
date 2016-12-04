@@ -114,6 +114,7 @@ app.post('/login/callback',
         
          */
         //console.log(req["user"]);
+        console.log(req);
         res.redirect('/');
     }
 );
