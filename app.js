@@ -14,7 +14,7 @@ var usersaml;
 
 passport.serializeUser(function (user, done) {
     console.log(user['issuer']['_']);
-    console.log(user['issuer']['$']);
+    console.log(JSON.stringify(user['issuer']['$']));
     usersaml = {};
     //usersaml.nameID = profile.nameID;
     //usersaml.nameIDFormat = profile.nameIDFormat;
