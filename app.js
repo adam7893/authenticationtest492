@@ -150,6 +150,7 @@ passport.logoutSaml = function(req, res) {
     req.user.nameID = req.user.saml.nameID;
     req.user.nameIDFormat = req.user.saml.nameIDFormat;
 */
+
     samlStrategy.logout(req, function(err, request){
         if(!err){
             //redirect to the IdP Logout URL
@@ -166,11 +167,15 @@ passport.logoutSamlCallback = function(req, res){
 app.post('/auth/saml/logout/callback', passport.logoutSamlCallback);
 
 app.get('/logout', function(req, res) {
-    //strategy is a ref to passport-saml Strategy instance 
-    samlStrategy.logout(req, function(){
+    req.logOut();
+    res.redirect('/');
+    //strategy is a ref to passport-saml Strategy instance
+
+    /* TODO: check here! */
+    /*samlStrategy.logout(req, function(){
         req.logout();
         res.redirect('/');
-    });
+    });*/
 });
 
 
