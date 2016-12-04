@@ -171,8 +171,12 @@ app.get('/logout', function (req, res) {
     console.log(req.session);
     req.session.destroy(function () {
         res.clearCookie('connect.sid');
-        res.redirect('/');
+        
     });
+
+    console.log("======");
+    console.log(req.session);
+    res.redirect('/');
     //strategy is a ref to passport-saml Strategy instance
 
     /* TODO: check here! */
