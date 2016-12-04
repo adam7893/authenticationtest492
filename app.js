@@ -114,7 +114,7 @@ app.post('/login/callback',
         
          */
         //console.log(req["user"]);
-        console.log(req);
+        //console.log(req);
         res.redirect('/');
     }
 );
@@ -168,6 +168,7 @@ passport.logoutSamlCallback = function (req, res) {
 app.post('/auth/saml/logout/callback', passport.logoutSamlCallback);
 
 app.get('/logout', function (req, res) {
+    console.log(req.session);
     req.session.destroy(function () {
         res.clearCookie('connect.sid');
         res.redirect('/');
