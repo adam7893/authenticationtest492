@@ -174,6 +174,7 @@ passport.logoutSaml = function (req, res) {
     samlStrategy.logout(req, function (err, request) {
         if (!err) {
             //redirect to the IdP Logout URL
+            req.logout();
             res.redirect(request);
         }
     });
@@ -188,7 +189,6 @@ passport.logoutSamlCallback = function (req, res) {
 app.post('/auth/saml/logout/callback', passport.logoutSamlCallback);
 
 app.get('/logout', function(req, res) {
-    req.logout();
     passport.logoutSaml(req, res);
 });
 
