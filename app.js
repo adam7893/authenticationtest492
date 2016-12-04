@@ -10,8 +10,13 @@ var saml = require('passport-saml');
 
 dotenv.load();
 
+var usersaml;
+
 passport.serializeUser(function (user, done) {
-    console.log(user);
+    console.log(user["issuer"]);
+    usersaml = {};
+    //usersaml.nameID = profile.nameID;
+    //usersaml.nameIDFormat = profile.nameIDFormat;
     done(null, user);
 });
 
@@ -43,7 +48,7 @@ passport.use(samlStrategy,
 
     */
 
-var usersaml;
+
 
 var samlStrategy = new saml.Strategy({
     // URL that goes from the Identity Provider -> Service Provider
@@ -64,12 +69,12 @@ var samlStrategy = new saml.Strategy({
     disableRequestedAuthnContext: true
 }, function (profile, done) {
 
-    usersaml = {};
+    /*usersaml = {};
     usersaml.nameID = profile.nameID;
     usersaml.nameIDFormat = profile.nameIDFormat;
 
     /* profile.nameID is currently undefined */
-    console.log(usersaml.nameID + ": " + profile.nameID);
+//    console.log(usersaml.nameID + ": " + profile.nameID);
 
     return done(null, profile);
 });
