@@ -67,6 +67,8 @@ var samlStrategy = new saml.Strategy({
     usersaml.nameID = profile.nameID;
     usersaml.nameIDFormat = profile.nameIDFormat;
 
+    console.log(usersaml.nameID + ": " + profile.nameID);
+
     return done(null, profile);
 });
 
@@ -155,6 +157,7 @@ passport.logoutSaml = function (req, res) {
     req.user.nameID = usersaml.nameID;
     req.user.nameIDFormat = usersaml.nameIDFormat;
 
+    /* usersaml.nameID is currently undefined */
     console.log(usersaml.nameID);
 
 
