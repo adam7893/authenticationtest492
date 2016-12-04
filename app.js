@@ -169,10 +169,12 @@ passport.logoutSamlCallback = function (req, res) {
 app.post('/auth/saml/logout/callback', passport.logoutSamlCallback);
 
 app.get('/logout', function (req, res) {
-    req.session.destroy(function () {
+    /*req.session.destroy(function () {
         //res.clearCookie('connect.sid');
         req.logout(); 
-    });
+    });*/
+    req.logout();
+    req.session.destroy();
     res.redirect('https://testshib.org/Shibboleth.sso/Logout');
 
     //console.log(req.session);
