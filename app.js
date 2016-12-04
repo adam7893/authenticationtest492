@@ -155,6 +155,8 @@ passport.logoutSaml = function (req, res) {
     req.user.nameID = usersaml.nameID;
     req.user.nameIDFormat = usersaml.nameIDFormat;
 
+    console.log(usersaml.nameID);
+
 
     samlStrategy.logout(req, function (err, request) {
         if (!err) {
@@ -172,7 +174,6 @@ passport.logoutSamlCallback = function (req, res) {
 app.post('/auth/saml/logout/callback', passport.logoutSamlCallback);
 
 app.get('/logout', function(req, res) {
-    console.log ("** In /logout **");
     passport.logoutSaml(req, res);
 });
 
