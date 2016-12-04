@@ -11,6 +11,7 @@ var saml = require('passport-saml');
 dotenv.load();
 
 passport.serializeUser(function (user, done) {
+    console.log(user);
     done(null, user);
 });
 
@@ -67,6 +68,7 @@ var samlStrategy = new saml.Strategy({
     usersaml.nameID = profile.nameID;
     usersaml.nameIDFormat = profile.nameIDFormat;
 
+    /* profile.nameID is currently undefined */
     console.log(usersaml.nameID + ": " + profile.nameID);
 
     return done(null, profile);
