@@ -168,7 +168,12 @@ passport.logoutSamlCallback = function (req, res) {
 
 app.post('/auth/saml/logout/callback', passport.logoutSamlCallback);
 
-app.get('/logout', function (req, res) {
+app.get('/logout', function(req, res) {
+    //strategy is a ref to passport-saml Strategy instance 
+    passport.logoutSaml(req, res);
+});
+
+/*app.get('/logout', function (req, res) {
     /*req.session.destroy(function () {
         //res.clearCookie('connect.sid');
         req.logout(); 
@@ -176,7 +181,7 @@ app.get('/logout', function (req, res) {
     /*req.logout();
     req.session.destroy();
     res.redirect('https://testshib.org/Shibboleth.sso/Logout');*/
-
+/*
     req.session.destroy( function() {
         res.clearCookie('connect.sid');
         req.logout();
@@ -202,7 +207,7 @@ app.get('/logout', function (req, res) {
         req.logout();
         res.redirect('/');
     });*/
-});
+//});
 
 
 
