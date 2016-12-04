@@ -75,7 +75,7 @@ var samlStrategy = new saml.Strategy({
     usersaml.nameIDFormat = profile.nameIDFormat;
 
     /* profile.nameID is currently undefined */
-//    console.log(usersaml.nameID + ": " + profile.nameID);
+    //    console.log(usersaml.nameID + ": " + profile.nameID);
 
     return done(null, profile);
 });
@@ -176,7 +176,10 @@ passport.logoutSaml = function (req, res) {
             //redirect to the IdP Logout URL
             res.redirect(request);
             console.log("After redirect");
-            req.logout();
+            req.session.destroy(function () {
+                //res.clearCookie('connect.sid');
+                req.logout();
+            });
         }
     });
 };
@@ -189,7 +192,7 @@ passport.logoutSamlCallback = function (req, res) {
 
 app.post('/auth/saml/logout/callback', passport.logoutSamlCallback);
 
-app.get('/logout', function(req, res) {
+app.get('/logout', function (req, res) {
     passport.logoutSaml(req, res);
 });
 
@@ -198,9 +201,9 @@ app.get('/logout', function(req, res) {
         //res.clearCookie('connect.sid');
         req.logout(); 
     });*/
-    /*req.logout();
-    req.session.destroy();
-    res.redirect('https://testshib.org/Shibboleth.sso/Logout');*/
+/*req.logout();
+req.session.destroy();
+res.redirect('https://testshib.org/Shibboleth.sso/Logout');*/
 /*
     req.session.destroy( function() {
         res.clearCookie('connect.sid');
@@ -223,10 +226,10 @@ app.get('/logout', function(req, res) {
     //strategy is a ref to passport-saml Strategy instance
 
     /* TODO: check here! */
-    /*samlStrategy.logout(req, function(){
-        req.logout();
-        res.redirect('/');
-    });*/
+/*samlStrategy.logout(req, function(){
+    req.logout();
+    res.redirect('/');
+});*/
 //});
 
 
