@@ -61,10 +61,10 @@ var samlStrategy = new saml.Strategy({
     disableRequestedAuthnContext: true
 }, function (profile, done) {
 
-        /*user.saml = {};
-        user.saml.nameID = profile.nameID;
-        user.saml.nameIDFormat = profile.nameIDFormat;*/
-        return done(null, profile);
+    /*user.saml = {};
+    user.saml.nameID = profile.nameID;
+    user.saml.nameIDFormat = profile.nameIDFormat;*/
+    return done(null, profile);
 });
 
 passport.use(samlStrategy);
@@ -144,31 +144,34 @@ app.get('/logout', function (req, res) {
     });
 });*/
 
-passport.logoutSaml = function(req, res) {
+passport.logoutSaml = function (req, res) {
     //Here add the nameID and nameIDFormat to the user if you stored it someplace.
     /*
     req.user.nameID = req.user.saml.nameID;
     req.user.nameIDFormat = req.user.saml.nameIDFormat;
 */
 
-    samlStrategy.logout(req, function(err, request){
-        if(!err){
+    samlStrategy.logout(req, function (err, request) {
+        if (!err) {
             //redirect to the IdP Logout URL
             res.redirect(request);
         }
     });
 };
 
-passport.logoutSamlCallback = function(req, res){
+passport.logoutSamlCallback = function (req, res) {
     req.logout();
     res.redirect('/');
 }
 
 app.post('/auth/saml/logout/callback', passport.logoutSamlCallback);
 
-app.get('/logout', function(req, res) {
-    req.logOut();
-    res.redirect('/');
+app.get('/logout', function (req, res) {
+    req.logout();
+    req.session.destroy(function () {
+        res.clearCookie('connect.sid');
+        res.redirect('/');
+    });
     //strategy is a ref to passport-saml Strategy instance
 
     /* TODO: check here! */
