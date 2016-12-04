@@ -129,7 +129,8 @@ app.post('/login/callback',
          */
         //console.log(req["user"]);
         //console.log(req);
-        console.log(req);
+        //console.log(req);
+        console.log("** In /login/callback");
         res.redirect('/');
     }
 );
