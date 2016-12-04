@@ -172,7 +172,7 @@ passport.logoutSamlCallback = function (req, res) {
 app.post('/auth/saml/logout/callback', passport.logoutSamlCallback);
 
 app.get('/logout', function(req, res) {
-    strategy.logout(req, function(){
+    samlStrategy.logout(req, function(){
         req.logout();
         res.redirect('/');
     });
