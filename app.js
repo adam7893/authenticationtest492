@@ -79,7 +79,8 @@ app.use(passport.session());
 
 function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
-        console.log("You are authenticated");
+        console.log("req is: " + req);
+        //console.log("You are authenticated");
         return next();
     }
     else {
@@ -168,14 +169,15 @@ passport.logoutSamlCallback = function (req, res) {
 app.post('/auth/saml/logout/callback', passport.logoutSamlCallback);
 
 app.get('/logout', function (req, res) {
-    console.log(req.session);
+    //console.log(req.session);
+    req.logout();
     req.session.destroy(function () {
         
         
     });
 
-    console.log("======");
-    console.log(req.session);
+    //console.log("======");
+    //console.log(req.session);
     res.clearCookie('connect.sid');
     res.redirect('/');
     //strategy is a ref to passport-saml Strategy instance
