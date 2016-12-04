@@ -79,7 +79,7 @@ app.use(passport.session());
 
 function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
-        console.log("req is: " + req);
+        //console.log("req is: " + req);
         //console.log("You are authenticated");
         return next();
     }
@@ -169,7 +169,10 @@ passport.logoutSamlCallback = function (req, res) {
 app.post('/auth/saml/logout/callback', passport.logoutSamlCallback);
 
 app.get('/logout', function (req, res) {
+    res.redirect('https://testshib.org/Shibboleth.sso/Logout');
+
     //console.log(req.session);
+    /*
     req.logout();
     req.session.destroy(function () {
         
