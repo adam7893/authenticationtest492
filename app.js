@@ -167,7 +167,6 @@ passport.logoutSamlCallback = function (req, res) {
 app.post('/auth/saml/logout/callback', passport.logoutSamlCallback);
 
 app.get('/logout', function (req, res) {
-    req.logout();
     req.session.destroy(function () {
         res.clearCookie('connect.sid');
         res.redirect('/');
