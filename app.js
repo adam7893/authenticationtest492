@@ -173,9 +173,13 @@ app.get('/logout', function (req, res) {
         //res.clearCookie('connect.sid');
         req.logout(); 
     });*/
-    req.logout();
+    /*req.logout();
     req.session.destroy();
-    res.redirect('https://testshib.org/Shibboleth.sso/Logout');
+    res.redirect('https://testshib.org/Shibboleth.sso/Logout');*/
+
+    req.session.destroy( function() {
+        res.redirect('https://testshib.org/Shibboleth.sso/Logout');
+    });
 
     //console.log(req.session);
     /*
