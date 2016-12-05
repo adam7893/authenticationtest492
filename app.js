@@ -131,8 +131,8 @@ app.post('/login/callback',
         
          */
         //console.log(req["user"]);
-        //var redirect = samlStrategy['additionalParams']['Redirect'];
-        console.log(samlStrategy);
+        var redirect = samlStrategy['additionalParams']['Redirect'];
+        console.log(redirect);
         res.redirect(redirect);
     }
 );
