@@ -192,7 +192,6 @@ passport.logoutSaml = function (req, res) {
     samlStrategy.logout(req, function (err, request) {
         if (!err) {
             //redirect to the IdP Logout URL
-            console.log(request);
             res.redirect(request);
             console.log("After redirect");
             req.session.destroy(function () {
@@ -210,7 +209,7 @@ passport.logoutSamlCallback = function (req, res) {
     res.redirect('/');
 }
 
-app.post('/auth/saml/logout/callback', passport.logoutSamlCallback);
+//app.post('/auth/saml/logout/callback', passport.logoutSamlCallback);
 
 app.get('/logout', function (req, res) {
     passport.logoutSaml(req, res);
