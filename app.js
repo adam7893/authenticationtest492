@@ -29,7 +29,7 @@ var ENTRY_POINT = "https://idp.testshib.org/idp/profile/SAML2/Redirect/SSO";
 var ISSUER = "localhost";
 
 var LOGOUT_URL = "https://www.testshib.org/Shibboleth.sso/Logout";
-var LOGOUT_CALLBACK_URL = "https://authenticationtest492.herokuapp.com";
+var LOGOUT_CALLBACK_URL = "https://authenticationtest492.herokuapp.com/logout/callback";
 
 /* TODO: figure out how to ask for only specific attributes
 
@@ -174,7 +174,7 @@ passport.logoutSamlCallback = function (req, res) {
     res.redirect('/');
 }
 
-app.post('/auth/saml/logout/callback', passport.logoutSamlCallback);
+app.post('/logout/callback', passport.logoutSamlCallback);
 
 app.get('/logout', function (req, res) {
     passport.logoutSaml(req, res);
