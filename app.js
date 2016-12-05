@@ -57,6 +57,7 @@ var samlStrategy = new saml.Strategy({
     // Usually specified as `/shibboleth` from site root
     issuer: ISSUER,
     logoutUrl: LOGOUT_URL,
+    logoutCallbackUrl: LOGOUT_CALLBACK_URL,
     identifierFormat: null,
     // Service Provider private key
     decryptionPvk: fs.readFileSync(__dirname + '/cert/key.pem', 'utf8'),
@@ -174,7 +175,10 @@ passport.logoutSamlCallback = function (req, res) {
     res.redirect('/');
 }
 
-app.post('/logout/callback', passport.logoutSamlCallback);
+app.post('/logout/callback', function(req, res) {
+    console.log("** In /logout/callback");
+    res.redirect('/');
+});
 
 app.get('/logout', function (req, res) {
     passport.logoutSaml(req, res);
