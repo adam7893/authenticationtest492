@@ -68,7 +68,8 @@ var samlStrategy = new saml.Strategy({
     // Identity Provider's public key
     cert: fs.readFileSync(__dirname + '/cert/idp_cert.pem', 'utf8'),
     validateInResponseTo: false,
-    disableRequestedAuthnContext: true
+    disableRequestedAuthnContext: true,
+    forceAuthn: true
 }, function (profile, done) {
 
     /*usersaml = {};
@@ -181,6 +182,8 @@ app.get('/logout', function (req, res) {
 
 passport.logoutSaml = function (req, res) {
     //Here add the nameID and nameIDFormat to the user if you stored it someplace.
+
+    /* Probably have to check if usersaml === null */
     console.log("** In passport.logoutSaml **");
     req.user.nameID = usersaml.nameID;
     req.user.nameIDFormat = usersaml.nameIDFormat;
