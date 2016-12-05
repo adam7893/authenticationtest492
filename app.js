@@ -85,8 +85,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 function ensureAuthenticated(req, res, next) {
-    console.log(req['route']['path']);
     if (req.isAuthenticated()) {
+        samlStrategy['additionalParams'] = {'Redirect': req['route']['path']};
         return next();
     }
     else {
@@ -131,7 +131,9 @@ app.post('/login/callback',
         
          */
         //console.log(req["user"]);
-        res.redirect(req['route']['path']);
+        var redirect = samlStrategy['additionalParams']['Redirect'];
+        console.log("Redirecting to: " + redirect);
+        res.redirect(redirect);
     }
 );
 
