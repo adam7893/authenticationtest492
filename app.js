@@ -171,7 +171,7 @@ app.get('/login/fail',
 app.get('/Metadata',
     function (req, res) {
         res.type('application/xml');
-        res.status(200).send(samlStrategy.generateServiceProviderMetadata(process.env.KEY));
+        res.status(200).send(samlStrategy.generateServiceProviderMetadata(process.env.CERT));
     }
 );
 
