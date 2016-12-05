@@ -7,6 +7,7 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var passport = require('passport');
 var saml = require('passport-saml');
+var Mustache = require('mustache');
 
 dotenv.load();
 
@@ -84,6 +85,7 @@ passport.use(samlStrategy);
 
 var app = express();
 
+app.use(express.static('public'));
 app.use(cookieParser());
 app.use(bodyParser());
 app.use(session({ secret: "secret" }));
@@ -101,17 +103,27 @@ function ensureAuthenticated(req, res, next) {
     }
 }
 
+var homePage = fs.readFileSync('public/home.html').toString();
 app.get('/',
     function (req, res) {
-        res.send('Home');
+        res.writeHead(200, {
+            'Content-Type': 'text/html'
+        });
+
+        res.end(homePage);
     }
 );
 
+var securePage = fs.readFileSync('public/secure.html').toString();
 app.get('/secure',
-    ensureAuthenticated,
-    function (req, res) {
-        res.send("Authenticated");
-    })
+    ensureAuthenticated, function (req, res) {
+        res.writeHead(200, {
+            'Content-Type': 'text/html'
+        });
+
+        res.end(securePage);
+    }
+);
 
 app.get('/login',
     passport.authenticate('saml', { failureRedirect: '/login/fail' }),
@@ -141,10 +153,16 @@ app.get('/login/fail',
     }
 );
 
-app.get('/Shibboleth.sso/Metadata',
+app.get('/Metadata',
     function (req, res) {
         res.type('application/xml');
         res.status(200).send(samlStrategy.generateServiceProviderMetadata(fs.readFileSync(__dirname + '/cert/cert.pem', 'utf8')));
+    }
+);
+
+app.get('/Session',
+    function(req, res) {
+        res.send(req.user);
     }
 );
 
@@ -177,6 +195,7 @@ passport.logoutSaml = function (req, res) {
             res.redirect(request);
             console.log("After redirect");
             req.session.destroy(function () {
+                // NOPE
                 res.clearCookie('connect.sid');
                 req.logout();
             });
