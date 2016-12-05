@@ -181,7 +181,9 @@ app.post('/logout/callback', function(req, res) {
 });
 
 app.get('/logout', function (req, res) {
-    passport.logoutSaml(req, res);
+    //passport.logoutSaml(req, res);
+    req.logout();
+    res.redirect('/');
 });
 
 //general error handler
