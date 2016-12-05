@@ -89,7 +89,7 @@ function ensureAuthenticated(req, res, next) {
         return next();
     }
     else {
-        samlStrategy['additionalParams'] = {'Redirect': req['route']['path']};
+        samlStrategy['Redirect'] = req['route']['path'];
         return res.redirect('/login');
     }
 }
@@ -131,7 +131,7 @@ app.post('/login/callback',
         
          */
         //console.log(req["user"]);
-        var redirect = samlStrategy['additionalParams']['Redirect'];
+        var redirect = samlStrategy['Redirect'];
         console.log(redirect);
         res.redirect(redirect);
     }
