@@ -86,10 +86,10 @@ app.use(passport.session());
 
 function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
-        samlStrategy['additionalParams'] = {'Redirect': req['route']['path']};
         return next();
     }
     else {
+        samlStrategy['additionalParams'] = {'Redirect': req['route']['path']};
         return res.redirect('/login');
     }
 }
