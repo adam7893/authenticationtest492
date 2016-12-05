@@ -67,7 +67,8 @@ var samlStrategy = new saml.Strategy({
     cert: fs.readFileSync(__dirname + '/cert/idp_cert.pem', 'utf8'),
     validateInResponseTo: false,
     disableRequestedAuthnContext: true,
-    forceAuthn: true
+    forceAuthn: true,
+    additionalParams: {}
 }, function (profile, done) {
     return done(null, profile);
 });
@@ -84,6 +85,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 function ensureAuthenticated(req, res, next) {
+    console.log(req['route']['path']);
     if (req.isAuthenticated()) {
         return next();
     }
@@ -129,8 +131,7 @@ app.post('/login/callback',
         
          */
         //console.log(req["user"]);
-        console.log("** In /login/callback");
-        res.redirect('/');
+        res.redirect(req['route']['path']);
     }
 );
 
@@ -154,6 +155,8 @@ app.get('/Session',
 );
 
 /* TODO: redirect back to homePage?? */
+// ComplexLogout
+// Redirects to IdP logout
 passport.logoutSaml = function (req, res) {
     if (usersaml != null) {
         req.user.nameID = usersaml.nameID;
@@ -182,9 +185,13 @@ app.post('/logout/callback', function(req, res) {
 
 app.get('/logout', function (req, res) {
     //passport.logoutSaml(req, res);
+    simpleLogout(req, res);
+});
+
+function simpleLogout(req, res) {
     req.logout();
     res.redirect('/');
-});
+};
 
 //general error handler
 app.use(function (err, req, res, next) {
