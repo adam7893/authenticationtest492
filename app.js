@@ -14,8 +14,6 @@ dotenv.load();
 var usersaml;
 
 passport.serializeUser(function (user, done) {
-    console.log(user['issuer']['_']);
-    console.log(JSON.stringify(user['issuer']['$'])['Format']);
     usersaml = {};
     usersaml.nameID = user['issuer']['_'];
     usersaml.nameIDFormat = user['issuer']['$'];
@@ -31,6 +29,7 @@ var ENTRY_POINT = "https://idp.testshib.org/idp/profile/SAML2/Redirect/SSO";
 var ISSUER = "localhost";
 
 var LOGOUT_URL = "https://www.testshib.org/Shibboleth.sso/Logout";
+var LOGOUT_CALLBACK_URL = "https://authenticationtest492.herokuapp.com";
 
 /* TODO: figure out how to ask for only specific attributes
 
@@ -49,8 +48,6 @@ passport.use(samlStrategy,
     });
 
     */
-
-
 
 var samlStrategy = new saml.Strategy({
     // URL that goes from the Identity Provider -> Service Provider
@@ -71,14 +68,6 @@ var samlStrategy = new saml.Strategy({
     disableRequestedAuthnContext: true,
     forceAuthn: true
 }, function (profile, done) {
-
-    /*usersaml = {};
-    usersaml.nameID = profile.nameID;
-    usersaml.nameIDFormat = profile.nameIDFormat;
-
-    /* profile.nameID is currently undefined */
-    //    console.log(usersaml.nameID + ": " + profile.nameID);
-
     return done(null, profile);
 });
 
@@ -95,8 +84,6 @@ app.use(passport.session());
 
 function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
-        //console.log("req is: " + req);
-        //console.log("You are authenticated");
         return next();
     }
     else {
@@ -141,8 +128,6 @@ app.post('/login/callback',
         
          */
         //console.log(req["user"]);
-        //console.log(req);
-        //console.log(req);
         console.log("** In /login/callback");
         res.redirect('/');
     }
@@ -162,101 +147,38 @@ app.get('/Metadata',
 );
 
 app.get('/Session',
-    function(req, res) {
+    function (req, res) {
         res.send(req.user);
     }
 );
 
-/* TODO: figure out logout
-        Possibly has to do something with cookies?
-
-        This currently doesn't work
-*/
-/*
-app.get('/logout', function (req, res) {
-    req.session.destroy(function (err) {
-        req.logout();
-        res.redirect('/'); //Inside a callback… bulletproof!
-    });
-});*/
-
+/* TODO: redirect back to homePage?? */
 passport.logoutSaml = function (req, res) {
-    //Here add the nameID and nameIDFormat to the user if you stored it someplace.
+    if (usersaml != null) {
+        req.user.nameID = usersaml.nameID;
+        req.user.nameIDFormat = usersaml.nameIDFormat;
 
-    /* Probably have to check if usersaml === null */
-    console.log("** In passport.logoutSaml **");
-    req.user.nameID = usersaml.nameID;
-    req.user.nameIDFormat = usersaml.nameIDFormat;
-
-    /* usersaml.nameID is currently undefined */
-    console.log(usersaml.nameID);
-
-
-    samlStrategy.logout(req, function (err, request) {
-        if (!err) {
-            //redirect to the IdP Logout URL
-            res.redirect(request);
-            console.log("After redirect");
-            req.session.destroy(function () {
-                // NOPE
-                //res.clearCookie('connect.sid');
-                req.logout();
-            });
-        }
-    });
+        samlStrategy.logout(req, function (err, request) {
+            if (!err) {
+                //redirect to the IdP Logout URL
+                res.redirect(request);
+                req.session.destroy(function () {
+                    req.logout();
+                });
+            }
+        });
+    }
 };
 
 passport.logoutSamlCallback = function (req, res) {
-    console.log("** In logoutSamlCallback");
-    req.logout();
     res.redirect('/');
 }
 
-//app.post('/auth/saml/logout/callback', passport.logoutSamlCallback);
+app.post('/auth/saml/logout/callback', passport.logoutSamlCallback);
 
 app.get('/logout', function (req, res) {
     passport.logoutSaml(req, res);
 });
-
-/*app.get('/logout', function (req, res) {
-    /*req.session.destroy(function () {
-        //res.clearCookie('connect.sid');
-        req.logout(); 
-    });*/
-/*req.logout();
-req.session.destroy();
-res.redirect('https://testshib.org/Shibboleth.sso/Logout');*/
-/*
-    req.session.destroy( function() {
-        res.clearCookie('connect.sid');
-        req.logout();
-        res.redirect('https://testshib.org/Shibboleth.sso/Logout');
-    });
-
-    //console.log(req.session);
-    /*
-    req.logout();
-    req.session.destroy(function () {
-        
-        
-    });
-
-    //console.log("======");
-    //console.log(req.session);
-    res.clearCookie('connect.sid');
-    res.redirect('/');
-    //strategy is a ref to passport-saml Strategy instance
-
-    /* TODO: check here! */
-/*samlStrategy.logout(req, function(){
-    req.logout();
-    res.redirect('/');
-});*/
-//});
-
-
-
-
 
 //general error handler
 app.use(function (err, req, res, next) {
