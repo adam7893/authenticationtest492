@@ -196,7 +196,7 @@ passport.logoutSaml = function (req, res) {
             console.log("After redirect");
             req.session.destroy(function () {
                 // NOPE
-                res.clearCookie('connect.sid');
+                //res.clearCookie('connect.sid');
                 req.logout();
             });
         }
