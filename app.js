@@ -60,6 +60,31 @@ var samlStrategy = new saml.Strategy({
     logoutCallbackUrl: LOGOUT_CALLBACK_URL,
     identifierFormat: null,
     // Service Provider private key
+    decryptionPvk: process.env.KEY,
+    // Service Provider Certificate
+    privateCert: process.env.KEY,
+    // Identity Provider's public key
+    cert: fs.readFileSync(__dirname + '/cert/idp_cert.pem', 'utf8'),
+    validateInResponseTo: false,
+    disableRequestedAuthnContext: true,
+    forceAuthn: true,
+    additionalParams: {}
+}, function (profile, done) {
+    return done(null, profile);
+});
+
+/*
+var samlStrategy = new saml.Strategy({
+    // URL that goes from the Identity Provider -> Service Provider
+    callbackUrl: CALLBACK_URL,
+    // URL that goes from the Service Provider -> Identity Provider
+    entryPoint: ENTRY_POINT,
+    // Usually specified as `/shibboleth` from site root
+    issuer: ISSUER,
+    logoutUrl: LOGOUT_URL,
+    logoutCallbackUrl: LOGOUT_CALLBACK_URL,
+    identifierFormat: null,
+    // Service Provider private key
     decryptionPvk: fs.readFileSync(__dirname + '/cert/key.pem', 'utf8'),
     // Service Provider Certificate
     privateCert: fs.readFileSync(__dirname + '/cert/key.pem', 'utf8'),
@@ -71,7 +96,7 @@ var samlStrategy = new saml.Strategy({
     additionalParams: {}
 }, function (profile, done) {
     return done(null, profile);
-});
+});*/
 
 passport.use(samlStrategy);
 
@@ -146,7 +171,7 @@ app.get('/login/fail',
 app.get('/Metadata',
     function (req, res) {
         res.type('application/xml');
-        res.status(200).send(samlStrategy.generateServiceProviderMetadata(fs.readFileSync(__dirname + '/cert/cert.pem', 'utf8')));
+        res.status(200).send(samlStrategy.generateServiceProviderMetadata(process.env.KEY));
     }
 );
 
