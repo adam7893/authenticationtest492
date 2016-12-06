@@ -192,10 +192,10 @@ passport.logoutSaml = function (req, res) {
         samlStrategy.logout(req, function (err, request) {
             if (!err) {
                 //redirect to the IdP Logout URL
-                res.redirect(request);
                 req.session.destroy(function () {
                     req.logout();
                 });
+                res.redirect(request);
             }
         });
     }
