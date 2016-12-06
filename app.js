@@ -217,7 +217,9 @@ app.get('/logout', function (req, res) {
 
 function simpleLogout(req, res) {
     req.logout();
-    res.redirect('/');
+ req.session.destroy(function (err) {
+        res.redirect('/'); //Inside a callback… bulletproof!
+    });
 };
 
 //general error handler
