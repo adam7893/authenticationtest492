@@ -205,20 +205,20 @@ passport.logoutSamlCallback = function (req, res) {
     res.redirect('/');
 }
 
-app.post('/logout/callback', function(req, res) {
+app.post('/logout/callback', function (req, res) {
     console.log("** In /logout/callback");
     res.redirect('/');
 });
 
 app.get('/logout', function (req, res) {
-    //passport.logoutSaml(req, res);
-    simpleLogout(req, res);
+    passport.logoutSaml(req, res);
+    //simpleLogout(req, res);
 });
 
 function simpleLogout(req, res) {
     req.logout();
- req.session.destroy(function (err) {
-     res.clearCookie('connect.sid');
+    req.session.destroy(function (err) {
+        res.clearCookie('connect.sid');
         res.redirect('/'); //Inside a callback… bulletproof!
     });
 };
