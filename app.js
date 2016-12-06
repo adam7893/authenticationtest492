@@ -68,6 +68,7 @@ var samlStrategy = new saml.Strategy({
     validateInResponseTo: false,
     disableRequestedAuthnContext: true,
     forceAuthn: true,
+    isPassive: true,
     additionalParams: {}
 }, function (profile, done) {
     return done(null, profile);
@@ -193,7 +194,6 @@ passport.logoutSaml = function (req, res) {
             if (!err) {
                 //redirect to the IdP Logout URL
                 req.session.destroy(function () {
-                    res.clearCookie('connect.sid');
                     req.logout();
                 });
                 res.redirect(request);
