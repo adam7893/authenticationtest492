@@ -69,7 +69,6 @@ var samlStrategy = new saml.Strategy({
     disableRequestedAuthnContext: true,
     forceAuthn: true,
     isPassive: false,
-    // TEST
     additionalParams: {}
 }, function (profile, done) {
     return done(null, profile);
@@ -203,6 +202,8 @@ passport.logoutSaml = function (req, res) {
     }
 };
 
+
+
 passport.logoutSamlCallback = function (req, res) {
     res.redirect('/');
 }
@@ -233,7 +234,13 @@ app.use(function (err, req, res, next) {
 
 var port = process.env.PORT || 8000;
 var server = app.listen(port, function () {
-    console.log('Listening on port %d', server.address().port)
+    console.log('Listening on port %d', server.address().port);
 });
 
-//Masters
+app.get("/expressLogout", function (req, res) {
+    req.logout();
+})
+
+app.get("/expressLogOut", function(req, res) {
+    req.logOut();
+})
