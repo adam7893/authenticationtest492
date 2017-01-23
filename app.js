@@ -69,6 +69,7 @@ var samlStrategy = new saml.Strategy({
     disableRequestedAuthnContext: true,
     forceAuthn: true,
     isPassive: false,
+    // TEST
     additionalParams: {}
 }, function (profile, done) {
     return done(null, profile);
