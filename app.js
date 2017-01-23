@@ -239,8 +239,10 @@ var server = app.listen(port, function () {
 
 app.get("/expressLogout", function (req, res) {
     req.logout();
+    res.redirect("/");
 })
 
 app.get("/expressLogOut", function(req, res) {
     req.logOut();
+    res.redirect("/");
 })
