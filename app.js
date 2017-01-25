@@ -146,6 +146,7 @@ app.use(function (err, req, res, next) {
 
 app.get("/logout", function(req, res) {
     req.logout();
+    res.redirect('/');
 });
 
 passport.logoutSamlCallback = function(req, res){
