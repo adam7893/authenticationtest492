@@ -252,5 +252,5 @@ app.get("/expressLogOut", function(req, res) {
 
 app.get("/testLogout", function(req, res) {
     res.clearCookie('connect.sid');
-    req.redirect("https://www.testshib.org/Shibboleth.sso/Logout");
+    res.redirect("https://www.testshib.org/Shibboleth.sso/Logout");
 })
