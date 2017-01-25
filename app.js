@@ -162,9 +162,8 @@ app.post('/logout/callback', passport.logoutSamlCallback);
 
 passport.logoutSaml = function(req, res) {
     //Here add the nameID and nameIDFormat to the user if you stored it someplace.
-    //req.user.nameID = req.user.saml.nameID;
-    //req.user.nameIDFormat = req.user.saml.nameIDFormat;
-
+    req.user.nameID = usersaml.nameID;
+    req.user.nameIDFormat = usersaml.nameIDFormat;
 
     samlStrategy.logout(req, function(err, request){
         if(!err){
