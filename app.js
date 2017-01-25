@@ -196,6 +196,7 @@ passport.logoutSaml = function (req, res) {
             if (!err) {
                 //redirect to the IdP Logout URL
                 req.session.destroy(function () {
+                    res.clearCookie('connect.sid');
                     req.logout();
                 });
                 res.redirect(request);
@@ -218,8 +219,8 @@ app.post('/logout/callback', function (req, res) {
 app.get('/logout', function (req, res) {
     passport.logoutSaml(req, res);
     //simpleLogout(req, res);
-    res.clearCookie('connect.sid');
-    req.logout();
+    
+    //req.logout();
 });
 
 function simpleLogout(req, res) {
