@@ -219,6 +219,7 @@ app.get('/logout', function (req, res) {
     //passport.logoutSaml(req, res);
     //simpleLogout(req, res);
     res.clearCookie('connect.sid');
+    req.logout();
 });
 
 function simpleLogout(req, res) {
@@ -251,5 +252,5 @@ app.get("/expressLogOut", function(req, res) {
 })
 
 app.get("/testLogout", function(req, res) {
-    res.redirect("https:://authenticationtest492.herokuapp.com/logout?return=https://www.testshib.org/Shibboleth.sso/Logout");
+    res.redirect("/logout?return=https://www.testshib.org/Shibboleth.sso/Logout");
 })
