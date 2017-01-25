@@ -1,4 +1,4 @@
-var arr = ["expressLogout", "expressLogOut"]
+var arr = ["expressLogout", "expressLogOut", "testLogout"]
 
 function createButtons() {
     var buttonGroup = document.getElementById("button group");
