@@ -216,7 +216,7 @@ app.post('/logout/callback', function (req, res) {
 });
 
 app.get('/logout', function (req, res) {
-    //passport.logoutSaml(req, res);
+    passport.logoutSaml(req, res);
     //simpleLogout(req, res);
     res.clearCookie('connect.sid');
     req.logout();
@@ -251,6 +251,7 @@ app.get("/expressLogOut", function(req, res) {
     res.redirect("/");
 })
 
+/*
 app.get("/testLogout", function(req, res) {
     res.redirect("/logout?return=https://www.testshib.org/Shibboleth.sso/Logout");
-})
+})*/
