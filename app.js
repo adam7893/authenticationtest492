@@ -28,7 +28,10 @@ var CALLBACK_URL = "https://authenticationtest492.herokuapp.com/login/callback";
 var ENTRY_POINT = "https://idp.testshib.org/idp/profile/SAML2/Redirect/SSO";
 var ISSUER = "localhost";
 
-var LOGOUT_URL = "https://www.testshib.org/Shibboleth.sso/Logout";
+
+// chained url here?
+//var LOGOUT_URL = "https://www.testshib.org/Shibboleth.sso/Logout";
+var LOGOUT_URL = "https://authenticationtest492.herokuapp.com/logout?return=https://www.testshib.org/Shibboleth.sso/Logout";
 var LOGOUT_CALLBACK_URL = "https://authenticationtest492.herokuapp.com/logout/callback";
 
 var samlStrategy = new saml.Strategy({
@@ -38,6 +41,7 @@ var samlStrategy = new saml.Strategy({
     entryPoint: ENTRY_POINT,
     // Usually specified as `/shibboleth` from site root
     issuer: ISSUER,
+    logoutUrl: LOGOUT_URL,
     logoutCallbackUrl: LOGOUT_CALLBACK_URL,
     identifierFormat: null,
     // Service Provider private key
