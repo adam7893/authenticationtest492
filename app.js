@@ -150,7 +150,6 @@ app.use(function (err, req, res, next) {
 });
 
 app.get("/logout", function (req, res) {
-    req.logout();
     passport.logoutSaml(req, res);
 });
 
@@ -163,6 +162,7 @@ app.post('/logout/callback', passport.logoutSamlCallback);
 
 passport.logoutSaml = function (req, res) {
     if (usersaml != null) {
+        console.log("Within usersaml != null");
         //Here add the nameID and nameIDFormat to the user if you stored it someplace.
         req.user = {};
         req.user.nameID = usersaml.nameID;
