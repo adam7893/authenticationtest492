@@ -17,6 +17,7 @@ passport.serializeUser(function (user, done) {
     usersaml = {};
     usersaml.nameID = user['issuer']['_'];
     usersaml.nameIDFormat = user['issuer']['$'];
+    console.log("here");
     done(null, user);
 });
 
@@ -148,31 +149,31 @@ app.use(function (err, req, res, next) {
     next(err);
 });
 
-app.get("/logout", function(req, res) {
+app.get("/logout", function (req, res) {
     req.logout();
-    passport.logoutSaml (req, res);
+    passport.logoutSaml(req, res);
 });
 
-passport.logoutSamlCallback = function(req, res){
+passport.logoutSamlCallback = function (req, res) {
     req.logout();
     res.redirect('/');
 }
 
 app.post('/logout/callback', passport.logoutSamlCallback);
 
-passport.logoutSaml = function(req, res) {
-        if (usersaml != null) {
-    //Here add the nameID and nameIDFormat to the user if you stored it someplace.
-    //req.user.nameID = usersaml.nameID;
-    //req.user.nameIDFormat = usersaml.nameIDFormat;
+passport.logoutSaml = function (req, res) {
+    if (usersaml != null) {
+        //Here add the nameID and nameIDFormat to the user if you stored it someplace.
+        req.user.nameID = usersaml.nameID;
+        req.user.nameIDFormat = usersaml.nameIDFormat;
 
-    samlStrategy.logout(req, function(err, request){
-        if(!err){
-            //redirect to the IdP Logout URL
-            res.redirect(request);
-        }
-    });
-        }
+        samlStrategy.logout(req, function (err, request) {
+            if (!err) {
+                //redirect to the IdP Logout URL
+                res.redirect(request);
+            }
+        });
+    }
 };
 
 
