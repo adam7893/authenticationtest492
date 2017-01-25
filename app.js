@@ -148,6 +148,11 @@ app.get("/logout", function(req, res) {
     req.logout();
 });
 
+passport.logoutSamlCallback = function(req, res){
+    req.logout();
+    res.redirect('/');
+}
+
 app.post('/logout/callback', passport.logoutSamlCallback);
 
 passport.logoutSaml = function(req, res) {
@@ -164,10 +169,7 @@ passport.logoutSaml = function(req, res) {
     });
 };
 
-passport.logoutSamlCallback = function(req, res){
-    req.logout();
-    res.redirect('/');
-}
+
 
 var port = process.env.PORT || 8000;
 var server = app.listen(port, function () {
