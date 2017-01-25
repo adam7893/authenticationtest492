@@ -67,8 +67,9 @@ var samlStrategy = new saml.Strategy({
     cert: fs.readFileSync(__dirname + '/cert/idp_cert.pem', 'utf8'),
     validateInResponseTo: false,
     disableRequestedAuthnContext: true,
-    forceAuthn: false,
+    forceAuthn: true,
     isPassive: false,
+    REMOTE_USER: "",
     additionalParams: {}
 }, function (profile, done) {
     return done(null, profile);
