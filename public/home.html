@@ -44,7 +44,8 @@
                 options["destroy"] = document.getElementById("destroy").checked;
                 options["idp redirect"] = document.getElementById("idp redirect").checked;
 
-                var address = "http://localhost:8000/logout";
+                //var address = "http://localhost:8000/logout";
+                var address = "https://authenticationtest492.herokuapp.com/";
             
                 $.ajax({
                     type: "POST",
