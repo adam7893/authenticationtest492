@@ -31,8 +31,8 @@ var ISSUER = "localhost";
 
 
 // chained url here?
-//var LOGOUT_URL = "https://www.testshib.org/Shibboleth.sso/Logout";
-var LOGOUT_URL = "https://authenticationtest492.herokuapp.com/logout?return=https://www.testshib.org/Shibboleth.sso/Logout";
+var LOGOUT_URL = "https://www.testshib.org/Shibboleth.sso/Logout";
+//var LOGOUT_URL = "https://authenticationtest492.herokuapp.com/logout?return=https://www.testshib.org/Shibboleth.sso/Logout";
 var LOGOUT_CALLBACK_URL = "https://authenticationtest492.herokuapp.com/logout/callback";
 
 var samlStrategy = new saml.Strategy({
