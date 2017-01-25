@@ -251,5 +251,5 @@ app.get("/expressLogOut", function(req, res) {
 })
 
 app.get("/testLogout", function(req, res) {
-    res.redirect("/logout?return=https://www.testshib.org/Shibboleth.sso/Logout");
+    res.redirect("https:://authenticationtest492.herokuapp.com/logout?return=https://www.testshib.org/Shibboleth.sso/Logout");
 })
