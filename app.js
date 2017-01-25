@@ -196,7 +196,7 @@ passport.logoutSaml = function (req, res) {
             if (!err) {
                 //redirect to the IdP Logout URL
                 req.session.destroy(function () {
-                    res.clearCookie('connect.sid');
+                    //res.clearCookie('connect.sid');
                     req.logout();
                 });
                 res.redirect(request);
