@@ -74,6 +74,8 @@ var samlStrategy = new saml.Strategy({
     return done(null, profile);
 });
 
+// Need to get rid of isPassive?
+
 /*
 var samlStrategy = new saml.Strategy({
     // URL that goes from the Identity Provider -> Service Provider
@@ -156,6 +158,7 @@ app.post('/login/callback',
             User information in: req["user"]
         
          */
+        alert(req["user"]);
         //console.log(req["user"]);
         var redirect = samlStrategy['Redirect'];
         console.log(redirect);
