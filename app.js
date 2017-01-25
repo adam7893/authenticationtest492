@@ -161,6 +161,7 @@ passport.logoutSamlCallback = function(req, res){
 app.post('/logout/callback', passport.logoutSamlCallback);
 
 passport.logoutSaml = function(req, res) {
+        if (usersaml != null) {
     //Here add the nameID and nameIDFormat to the user if you stored it someplace.
     req.user.nameID = usersaml.nameID;
     req.user.nameIDFormat = usersaml.nameIDFormat;
@@ -171,6 +172,7 @@ passport.logoutSaml = function(req, res) {
             res.redirect(request);
         }
     });
+        }
 };
 
 
