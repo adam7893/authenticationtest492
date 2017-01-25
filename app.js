@@ -31,24 +31,6 @@ var ISSUER = "localhost";
 var LOGOUT_URL = "https://www.testshib.org/Shibboleth.sso/Logout";
 var LOGOUT_CALLBACK_URL = "https://authenticationtest492.herokuapp.com/logout/callback";
 
-/* TODO: figure out how to ask for only specific attributes
-
-    Possibly something akin to the following?
-
-passport.use(samlStrategy,
-    function (profile, done) {
-        return done(null,
-            {
-                id: profile.uid,
-                email: profile.email,
-                displayName: profile.cn,
-                firstName: profile.givenName,
-                lastName: profile.sn
-            });
-    });
-
-    */
-
 var samlStrategy = new saml.Strategy({
     // URL that goes from the Identity Provider -> Service Provider
     callbackUrl: CALLBACK_URL,
@@ -56,7 +38,6 @@ var samlStrategy = new saml.Strategy({
     entryPoint: ENTRY_POINT,
     // Usually specified as `/shibboleth` from site root
     issuer: ISSUER,
-    logoutUrl: LOGOUT_URL,
     logoutCallbackUrl: LOGOUT_CALLBACK_URL,
     identifierFormat: null,
     // Service Provider private key
@@ -67,41 +48,12 @@ var samlStrategy = new saml.Strategy({
     cert: fs.readFileSync(__dirname + '/cert/idp_cert.pem', 'utf8'),
     validateInResponseTo: false,
     disableRequestedAuthnContext: true,
-    authnContext: false,
     forceAuthn: true,
     isPassive: false,
-    REMOTE_USER: "",
     additionalParams: {}
 }, function (profile, done) {
     return done(null, profile);
 });
-
-// Need to get rid of isPassive?
-
-/*
-var samlStrategy = new saml.Strategy({
-    // URL that goes from the Identity Provider -> Service Provider
-    callbackUrl: CALLBACK_URL,
-    // URL that goes from the Service Provider -> Identity Provider
-    entryPoint: ENTRY_POINT,
-    // Usually specified as `/shibboleth` from site root
-    issuer: ISSUER,
-    logoutUrl: LOGOUT_URL,
-    logoutCallbackUrl: LOGOUT_CALLBACK_URL,
-    identifierFormat: null,
-    // Service Provider private key
-    decryptionPvk: fs.readFileSync(__dirname + '/cert/key.pem', 'utf8'),
-    // Service Provider Certificate
-    privateCert: fs.readFileSync(__dirname + '/cert/key.pem', 'utf8'),
-    // Identity Provider's public key
-    cert: fs.readFileSync(__dirname + '/cert/idp_cert.pem', 'utf8'),
-    validateInResponseTo: false,
-    disableRequestedAuthnContext: true,
-    forceAuthn: true,
-    additionalParams: {}
-}, function (profile, done) {
-    return done(null, profile);
-});*/
 
 passport.use(samlStrategy);
 
@@ -186,75 +138,39 @@ app.get('/Session',
     }
 );
 
-/* TODO: redirect back to homePage?? */
-// ComplexLogout
-// Redirects to IdP logout
-passport.logoutSaml = function (req, res) {
-    if (usersaml != null) {
-        req.user.nameID = usersaml.nameID;
-        req.user.nameIDFormat = usersaml.nameIDFormat;
-
-        samlStrategy.logout(req, function (err, request) {
-            if (!err) {
-                //redirect to the IdP Logout URL
-                req.session.destroy(function () {
-                    //res.clearCookie('connect.sid');
-                    req.logout();
-                });
-                res.redirect(request);
-            }
-        });
-    }
-};
-
-
-
-passport.logoutSamlCallback = function (req, res) {
-    res.redirect('/');
-}
-
-app.post('/logout/callback', function (req, res) {
-    console.log("** In /logout/callback");
-    res.redirect('/');
-});
-
-app.get('/logout', function (req, res) {
-    passport.logoutSaml(req, res);
-    //simpleLogout(req, res);
-    
-    //req.logout();
-});
-
-function simpleLogout(req, res) {
-    req.logout();
-    req.session.destroy(function (err) {
-        res.clearCookie('connect.sid');
-        res.redirect('/'); //Inside a callback… bulletproof!
-    });
-};
-
 //general error handler
 app.use(function (err, req, res, next) {
     console.log("Fatal error: " + JSON.stringify(err));
     next(err);
 });
 
+app.get("/logout", function(req, res) {
+    req.logout();
+});
+
+app.post('/logout/callback', passport.logoutSamlCallback);
+
+passport.logoutSaml = function(req, res) {
+    //Here add the nameID and nameIDFormat to the user if you stored it someplace.
+    //req.user.nameID = req.user.saml.nameID;
+    //req.user.nameIDFormat = req.user.saml.nameIDFormat;
+
+
+    samlStrategy.logout(req, function(err, request){
+        if(!err){
+            //redirect to the IdP Logout URL
+            res.redirect(request);
+        }
+    });
+};
+
+passport.logoutSamlCallback = function(req, res){
+    req.logout();
+    res.redirect('/');
+}
+
 var port = process.env.PORT || 8000;
 var server = app.listen(port, function () {
     console.log('Listening on port %d', server.address().port);
 });
 
-app.get("/expressLogout", function (req, res) {
-    req.logout();
-    res.redirect("/");
-})
-
-app.get("/expressLogOut", function(req, res) {
-    req.logOut();
-    res.redirect("/");
-})
-
-/*
-app.get("/testLogout", function(req, res) {
-    res.redirect("/logout?return=https://www.testshib.org/Shibboleth.sso/Logout");
-})*/
