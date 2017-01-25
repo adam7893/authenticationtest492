@@ -57,6 +57,9 @@ var samlStrategy = new saml.Strategy({
     isPassive: false,
     additionalParams: {}
 }, function (profile, done) {
+          user.saml = {};
+      user.saml.nameID = profile.nameID;
+      user.saml.nameIDFormat = profile.nameIDFormat;
     return done(null, profile);
 });
 
@@ -176,8 +179,6 @@ passport.logoutSaml = function (req, res) {
         });
     }
 };
-
-
 
 var port = process.env.PORT || 8000;
 var server = app.listen(port, function () {
