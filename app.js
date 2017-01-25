@@ -57,9 +57,6 @@ var samlStrategy = new saml.Strategy({
     isPassive: false,
     additionalParams: {}
 }, function (profile, done) {
-          user.saml = {};
-      user.saml.nameID = profile.nameID;
-      user.saml.nameIDFormat = profile.nameIDFormat;
     return done(null, profile);
 });
 
@@ -122,8 +119,10 @@ app.post('/login/callback',
          */
         //console.log(req["user"]);
         var redirect = samlStrategy['Redirect'];
-        console.log(redirect);
-        res.redirect(redirect);
+        //console.log(redirect);
+        //res.redirect(redirect);
+
+        res.redirect('/');  //changed just for ease of testing
     }
 );
 
@@ -152,6 +151,47 @@ app.use(function (err, req, res, next) {
     next(err);
 });
 
+/*
+    req.logout()
+    res.clearCookie('connect.sid')
+    req.session.destroy()
+    res.redirect(' <idp.logout>');
+        "https://www.testshib.org/Shibboleth.sso/Logout"
+
+
+
+ */
+
+/*
+app.get("/logout", function(req, res) {
+    res.redirect("/");
+
+});
+*/
+app.post("/logout", function (req, res) {
+    console.log(req.body);
+
+    if (req.body["cookies"]) {
+        res.clearCookie("connect.sid");
+    }
+
+    if (req.body["destroy"]) {
+        req.session.destory();
+    }
+
+    if (req.body["logout"]) {
+        req.logout();
+    }
+
+    if (req.body["idp redirect"]) {
+        res.redirect("https://www.testshib.org/Shibboleth.sso/Logout");
+    }
+    else {
+        res.redirect("/");
+    }
+});
+
+/*
 app.get("/logout", function (req, res) {
     passport.logoutSaml(req, res);
 });
@@ -178,7 +218,7 @@ passport.logoutSaml = function (req, res) {
             }
         });
     }
-};
+};*/
 
 var port = process.env.PORT || 8000;
 var server = app.listen(port, function () {
