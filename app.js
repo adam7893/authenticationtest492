@@ -183,7 +183,7 @@ app.post("/logout", function (req, res) {
         req.logout();
     }
 
-    if (req.body["idp redirect"]) {
+    if (req.body["idp"]) {
         res.redirect("https://www.testshib.org/Shibboleth.sso/Logout");
     }
     else {

@@ -27,7 +27,7 @@
         <label><input type="checkbox" id="destroy">Use req.session.destroy()</label>
         <br>
 
-        <label><input type="checkbox" id="idp redirect">Redirect to idp logout</label>
+        <label><input type="checkbox" id="idp">Redirect to idp logout</label>
         <br>
 
 
@@ -42,7 +42,7 @@
                 options["logout"] = document.getElementById("logout").checked;
                 options["cookies"] = document.getElementById("clear cookies").checked;
                 options["destroy"] = document.getElementById("destroy").checked;
-                options["idp redirect"] = document.getElementById("idp redirect").checked;
+                options["idp"] = document.getElementById("idp").checked;
 
                 //var address = "http://localhost:8000/logout";
                 var address = "https://authenticationtest492.herokuapp.com/logout";
