@@ -158,7 +158,6 @@ app.post('/login/callback',
             User information in: req["user"]
         
          */
-        console.log(req["user"]);
         //console.log(req["user"]);
         var redirect = samlStrategy['Redirect'];
         console.log(redirect);
@@ -252,5 +251,5 @@ app.get("/expressLogOut", function(req, res) {
 
 app.get("/testLogout", function(req, res) {
     res.clearCookie('connect.sid');
-    res.redirect("https://www.testshib.org/Shibboleth.sso/Logout");
+    res.redirect("/logout?return=https://www.testshib.org/Shibboleth.sso/Logout");
 })
