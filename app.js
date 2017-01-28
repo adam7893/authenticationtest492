@@ -232,6 +232,7 @@ passport.logoutSaml = function (req, res) {
                 //redirect to the IdP Logout URL
                 console.log("Redirecting to " + request);
                 req.logout();
+                res.clearCookie("connect.sid");
                 res.redirect(request);
             }
         });
