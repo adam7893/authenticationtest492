@@ -218,7 +218,6 @@ app.post("/logout", function (req, res) {
 
 passport.logoutSaml = function (req, res) {
     if (usersaml != null) {
-        console.log("Within usersaml != null");
         //Here add the nameID and nameIDFormat to the user if you stored it someplace.
         req.user = {};
         req.user.nameID = usersaml.nameID;
@@ -227,6 +226,7 @@ passport.logoutSaml = function (req, res) {
         samlStrategy.logout(req, function (err, request) {
             if (!err) {
                 //redirect to the IdP Logout URL
+                console.log("Redirecting to " + request);
                 res.redirect(request);
             }
         });
