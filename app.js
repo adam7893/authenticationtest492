@@ -18,8 +18,6 @@ passport.serializeUser(function (user, done) {
     usersaml.nameID = user['issuer']['_'];
     usersaml.nameIDFormat = user['issuer']['$'];
 
-    console.log("Serializing User");
-
     done(null, user);
 });
 
@@ -74,7 +72,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 function ensureAuthenticated(req, res, next) {
-    console.log("Checking authentication");
     if (req.isAuthenticated()) {
         return next();
     }
@@ -223,6 +220,11 @@ app.post("/logout", function (req, res) {
 app.get('/logout', function (req, res) {
     passport.logoutSaml(req, res);
 })
+
+app.get('/Shibboleth.sso/logout', function(req, res) {
+    console.log("in shibboleth/logout...");
+    res.redirect('/');
+});
 
 passport.logoutSaml = function (req, res) {
     if (usersaml != null) {
