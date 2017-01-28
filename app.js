@@ -198,7 +198,7 @@ app.post("/logout", function (req, res) {
 
     if (req.body["destroy"]) {
         console.log("Destroying");
-        req.session.destory();
+        req.session.destroy();
     }
 
     if (req.body["logout"]) {
