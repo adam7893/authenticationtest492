@@ -231,6 +231,7 @@ passport.logoutSaml = function (req, res) {
             if (!err) {
                 //redirect to the IdP Logout URL
                 console.log("Redirecting to " + request);
+                req.logout();
                 res.redirect(request);
             }
         });
