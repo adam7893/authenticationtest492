@@ -96,19 +96,19 @@ app.get('/',
 
         if (testBool) {
             // User is logged in
-            list = [{user: dummyUser}];
+            list = [{ user: dummyUser }];
             partialPage = fs.readFileSync('public/authenticated.html').toString();
         }
         else {
             partialPage = fs.readFileSync('public/notAuthenticated.html').toString();
-            list = [{user: null}];
+            list = [{ user: null }];
         }
 
         var html = Mustache.render(homePage, {
             list: list
         }, {
-            partial: partialPage
-        });
+                partial: partialPage
+            });
 
         res.end(html);
     }
@@ -208,13 +208,22 @@ app.post("/logout", function (req, res) {
 
     if (req.body["idp"]) {
         console.log("Redirecting to IdP logout");
-        res.redirect("https://www.testshib.org/Shibboleth.sso/Logout");
+        passport.logoutSaml(req, res);
     }
     else {
         console.log("Redirecting to home page");
         res.redirect("/");
     }
 });
+
+passport.logoutSaml = function (req, res) {
+    samlStrategy.logout(req, function (err, request) {
+        if (!err) {
+            //redirect to the IdP Logout URL
+            res.redirect(request);
+        }
+    });
+}
 
 /*
 app.get("/logout", function (req, res) {
