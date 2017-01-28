@@ -18,6 +18,8 @@ passport.serializeUser(function (user, done) {
     usersaml.nameID = user['issuer']['_'];
     usersaml.nameIDFormat = user['issuer']['$'];
 
+    console.log("Serializing User");
+
     done(null, user);
 });
 
@@ -72,6 +74,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 function ensureAuthenticated(req, res, next) {
+    console.log("Checking authentication");
     if (req.isAuthenticated()) {
         return next();
     }
