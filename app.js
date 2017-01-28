@@ -233,6 +233,13 @@ passport.logoutSaml = function (req, res) {
     }
 }
 
+passport.logoutSamlCallback = function (req, res) {
+    console.logout("In callback");
+    res.redirect('/');
+}
+
+app.post('/logout/callback', passport.logoutSamlCallback);
+
 /*
 app.get("/logout", function (req, res) {
     passport.logoutSaml(req, res);
