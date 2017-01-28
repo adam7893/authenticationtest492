@@ -160,7 +160,8 @@ app.get('/login/fail',
 app.get('/Metadata',
     function (req, res) {
         res.type('application/xml');
-        res.status(200).send(samlStrategy.generateServiceProviderMetadata(process.env.CERT));
+        //res.status(200).send(samlStrategy.generateServiceProviderMetadata(process.env.CERT));
+        res.status(200).send(samlStrategy.generateServiceProviderMetadata(fs.readFileSync(__dirname + '/cert/idp_cert.pem', 'utf8'));
     }
 );
 
@@ -235,8 +236,10 @@ passport.logoutSaml = function (req, res) {
                 //redirect to the IdP Logout URL
                 console.log("Redirecting to " + request);
                 req.logout();
+                /*
                 req.session.destroy();
                 res.clearCookie("connect.sid");
+                */
                 res.redirect(request);
             }
         });
