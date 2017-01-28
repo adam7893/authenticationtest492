@@ -161,7 +161,7 @@ app.get('/Metadata',
     function (req, res) {
         res.type('application/xml');
         //res.status(200).send(samlStrategy.generateServiceProviderMetadata(process.env.CERT));
-        res.status(200).send(samlStrategy.generateServiceProviderMetadata(fs.readFileSync(__dirname + '/cert/idp_cert.pem', 'utf8'));
+        res.status(200).send(samlStrategy.generateServiceProviderMetadata(fs.readFileSync(__dirname + '/cert/idp_cert.pem', 'utf8')));
     }
 );
 
