@@ -82,13 +82,35 @@ function ensureAuthenticated(req, res, next) {
 }
 
 var homePage = fs.readFileSync('public/home.html').toString();
+//var partialPage = fs.readFileSync('public/header.html').toString();
 app.get('/',
     function (req, res) {
         res.writeHead(200, {
             'Content-Type': 'text/html'
         });
 
-        res.end(homePage);
+        var list = [];
+        var partialPage;
+        var dummyUser = "John Doe";
+        var testBool = false;
+
+        if (testBool) {
+            // User is logged in
+            list = [{user: dummyUser}];
+            partialPage = fs.readFileSync('public/authenticated.html').toString();
+        }
+        else {
+            partialPage = fs.readFileSync('public/notAuthenticated.html').toString();
+            list = [{user: null}];
+        }
+
+        var html = Mustache.render(homePage, {
+            list: list
+        }, {
+            partial: partialPage
+        });
+
+        res.end(html);
     }
 );
 
@@ -169,24 +191,27 @@ app.get("/logout", function(req, res) {
 });
 */
 app.post("/logout", function (req, res) {
-    console.log(req.body);
-
     if (req.body["cookies"]) {
+        console.log("Clearing cookies");
         res.clearCookie("connect.sid");
     }
 
     if (req.body["destroy"]) {
+        console.log("Destroying");
         req.session.destory();
     }
 
     if (req.body["logout"]) {
+        console.log("Logging out");
         req.logout();
     }
 
     if (req.body["idp"]) {
+        console.log("Redirecting to IdP logout");
         res.redirect("https://www.testshib.org/Shibboleth.sso/Logout");
     }
     else {
+        console.log("Redirecting to home page");
         res.redirect("/");
     }
 });
