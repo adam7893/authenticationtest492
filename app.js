@@ -14,12 +14,14 @@ dotenv.load();
 var usersaml;
 
 passport.serializeUser(function (user, done) {
-    usersaml = {};
+    /*usersaml = {};
     usersaml.nameID = user['issuer']['_'];
-    usersaml.nameIDFormat = user['issuer']['$'];
+    usersaml.nameIDFormat = user['issuer']['$'];*/
 
     done(null, user);
 });
+
+// user.sessionID
 
 passport.deserializeUser(function (user, done) {
     done(null, user);
@@ -57,7 +59,10 @@ var samlStrategy = new saml.Strategy({
     isPassive: false,
     additionalParams: {}
 }, function (profile, done) {
-    return done(null, profile);
+    usersaml = {};
+    usersaml.nameID = profile.nameID;
+    usersaml.nameIDFormat = profile.nameIDFormat;
+    //return done(null, profile);
 });
 
 passport.use(samlStrategy);
@@ -82,36 +87,34 @@ function ensureAuthenticated(req, res, next) {
 }
 
 var homePage = fs.readFileSync('public/home.html').toString();
-//var partialPage = fs.readFileSync('public/header.html').toString();
-app.get('/',
-    function (req, res) {
-        res.writeHead(200, {
-            'Content-Type': 'text/html'
+app.get('/', function (req, res) {
+    res.writeHead(200, {
+        'Content-Type': 'text/html'
+    });
+
+    var list = [];
+    var partialPage;
+    /*var dummyUser = "John Doe";
+    var testBool = false;*/
+
+    if (req.isAuthenticated()) {
+        // User is logged in
+        list = [{ user: req.user["urn:oid:0.9.2342.19200300.100.1.1"] }];
+        partialPage = fs.readFileSync('public/authenticated.html').toString();
+    }
+    else {
+        partialPage = fs.readFileSync('public/notAuthenticated.html').toString();
+        list = [{ user: null }];
+    }
+
+    var html = Mustache.render(homePage, {
+        list: list
+    }, {
+            partial: partialPage
         });
 
-        var list = [];
-        var partialPage;
-        /*var dummyUser = "John Doe";
-        var testBool = false;*/
-
-        if (req.isAuthenticated()) {
-            // User is logged in
-            list = [{ user: req.user["urn:oid:0.9.2342.19200300.100.1.1"] }];
-            partialPage = fs.readFileSync('public/authenticated.html').toString();
-        }
-        else {
-            partialPage = fs.readFileSync('public/notAuthenticated.html').toString();
-            list = [{ user: null }];
-        }
-
-        var html = Mustache.render(homePage, {
-            list: list
-        }, {
-                partial: partialPage
-            });
-
-        res.end(html);
-    }
+    res.end(html);
+}
 );
 
 var securePage = fs.readFileSync('public/secure.html').toString();
@@ -139,10 +142,11 @@ app.post('/login/callback',
             User information in: req["user"]
         
          */
-        //console.log(req["user"]);
+
+        /*
         var redirect = samlStrategy['Redirect'];
-        //console.log(redirect);
-        //res.redirect(redirect);
+        res.redirect(redirect);
+        */
 
         res.redirect('/');  //changed just for ease of testing
     }
@@ -163,19 +167,18 @@ app.get('/Metadata',
 );
 
 app.get('/User', function (req, res) {
-        res.send(req.user);
-    }
-);
+    res.send(req.user);
+});
 
 app.get('/Session', function (req, res) {
     res.send(req.session);
-})
+});
 
-app.get('/body', function(req, res) {
+app.get('/body', function (req, res) {
     res.send(req.body);
 });
 
-app.get('/cookies', function(req, res) {
+app.get('/cookies', function (req, res) {
     res.send(req.cookies);
 })
 
@@ -191,9 +194,6 @@ app.use(function (err, req, res, next) {
     req.session.destroy()
     res.redirect(' <idp.logout>');
         "https://www.testshib.org/Shibboleth.sso/Logout"
-
-
-
  */
 
 app.post("/logout", function (req, res) {
@@ -226,7 +226,7 @@ app.get('/logout', function (req, res) {
     passport.logoutSaml(req, res);
 })
 
-app.get('/Shibboleth.sso/logout', function(req, res) {
+app.get('/Shibboleth.sso/logout', function (req, res) {
     console.log("in shibboleth/logout...");
     res.redirect('/');
 });
@@ -238,13 +238,13 @@ passport.logoutSaml = function (req, res) {
         req.user.nameID = usersaml.nameID;
         req.user.nameIDFormat = usersaml.nameIDFormat;
 
-        console.log("ID: " + usersaml.nameID + "; Format: " + usersaml.nameIDFormat);
+        //console.log("ID: " + usersaml.nameID + "; Format: " + usersaml.nameIDFormat);
 
         samlStrategy.logout(req, function (err, request) {
             if (!err) {
                 //redirect to the IdP Logout URL
                 console.log("Redirecting to " + request);
-                req.session.destroy(function(err) {
+                req.session.destroy(function (err) {
                     req.logout();
                     res.redirect(request);
                 });
@@ -265,7 +265,7 @@ passport.logoutSamlCallback = function (req, res) {
 
 app.post('/logout/callback', passport.logoutSamlCallback);
 
-app.get('/logout/callback', function(req, res) {
+app.get('/logout/callback', function (req, res) {
     console.log("In logout/callback");
     req.logout();
     res.redirect('/');
