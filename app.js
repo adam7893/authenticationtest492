@@ -171,6 +171,10 @@ app.get('/Session', function (req, res) {
     res.send(req.session);
 })
 
+app.get('/req', function(req, res) {
+    res.send(req);
+})
+
 //general error handler
 app.use(function (err, req, res, next) {
     console.log("Fatal error: " + JSON.stringify(err));
