@@ -58,16 +58,10 @@ var samlStrategy = new saml.Strategy({
     cert: fs.readFileSync(__dirname + '/cert/idp_cert.pem', 'utf8'),
     validateInResponseTo: false,
     disableRequestedAuthnContext: true,
-    /*
     forceAuthn: true,
-    */
     isPassive: false,
-    additionalParams: {},
-    passReqToCallback: true
-}, function (req, profile, done) {
-    if (!req.user) {
-        res.redirect('/login');
-    }
+    additionalParams: {}
+}, function (profile, done) {
     usersaml = {};
     usersaml.nameID = profile['issuer']['_'];
     usersaml.nameIDFormat = profile['issuer']['$'];
