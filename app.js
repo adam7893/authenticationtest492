@@ -164,11 +164,14 @@ app.get('/Metadata',
     }
 );
 
-app.get('/Session',
-    function (req, res) {
+app.get('/User', function (req, res) {
         res.send(req.user);
     }
 );
+
+app.get('/Session', function (req, res) {
+    res.send(req.session);
+})
 
 //general error handler
 app.use(function (err, req, res, next) {
@@ -187,12 +190,6 @@ app.use(function (err, req, res, next) {
 
  */
 
-/*
-app.get("/logout", function(req, res) {
-    res.redirect("/");
-
-});
-*/
 app.post("/logout", function (req, res) {
     if (req.body["cookies"]) {
         console.log("Clearing cookies");
@@ -239,12 +236,15 @@ passport.logoutSaml = function (req, res) {
             if (!err) {
                 //redirect to the IdP Logout URL
                 console.log("Redirecting to " + request);
-                req.logout();
+                req.session.destroy(function(err) {
+                    req.logout();
+                    res.redirect(request);
+                });
                 /*
                 req.session.destroy();
                 res.clearCookie("connect.sid");
-                */
                 res.redirect(request);
+                */
             }
         });
     }
