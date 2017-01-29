@@ -18,6 +18,8 @@ passport.serializeUser(function (user, done) {
     usersaml.nameID = user['issuer']['_'];
     usersaml.nameIDFormat = user['issuer']['$'];*/
 
+    console.log("SERIALIZE: " + user['issuer']['_'] +": " + user['issuer']['$']);
+
     done(null, user);
 });
 
@@ -62,6 +64,8 @@ var samlStrategy = new saml.Strategy({
     usersaml = {};
     usersaml.nameID = profile.nameID;
     usersaml.nameIDFormat = profile.nameIDFormat;
+
+    console.log("FUNCTION: " + usersaml.nameID + ": " + usersaml.nameIDFormat)
     return done(null, profile);
 });
 
