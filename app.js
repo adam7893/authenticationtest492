@@ -137,6 +137,7 @@ app.get('/secure',
 app.get('/login',
     passport.authenticate('saml', { failureRedirect: '/login/fail' }),
     function (req, res) {
+        console.log(req.user != null);
         res.redirect('/');
     }
 );
