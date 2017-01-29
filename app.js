@@ -171,8 +171,18 @@ app.get('/Session', function (req, res) {
     res.send(req.session);
 })
 
-app.get('/req', function(req, res) {
-    res.send(req);
+app.get('/body', function(req, res) {
+    res.send(req.body);
+});
+
+app.get('/cookies', function(req, res) {
+    console.log("COOKIES = " + req.cookies)
+    res.send(req.cookies);
+})
+
+app.get('/signedcookies', function(req, res) {
+    console.log("SIGNED COOKIES = " +req.signedCookies);
+    res.send(req.signedCookies);
 })
 
 //general error handler
