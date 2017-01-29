@@ -91,12 +91,12 @@ app.get('/',
 
         var list = [];
         var partialPage;
-        var dummyUser = "John Doe";
-        var testBool = false;
+        /*var dummyUser = "John Doe";
+        var testBool = false;*/
 
-        if (testBool) {
+        if (req.isAuthenticated()) {
             // User is logged in
-            list = [{ user: dummyUser }];
+            list = [{ user: req.user["urn:oid:0.9.2342.19200300.100.1.1"] }];
             partialPage = fs.readFileSync('public/authenticated.html').toString();
         }
         else {
