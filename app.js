@@ -62,7 +62,7 @@ var samlStrategy = new saml.Strategy({
     usersaml = {};
     usersaml.nameID = profile.nameID;
     usersaml.nameIDFormat = profile.nameIDFormat;
-    //return done(null, profile);
+    return done(null, profile);
 });
 
 passport.use(samlStrategy);
