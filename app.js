@@ -82,7 +82,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 function ensureAuthenticated(req, res, next) {
-    if (req.isAuthenticated() && req.user) {
+    if (req.isAuthenticated() && (req.user != null)) {
         return next();
     }
     else {
@@ -172,7 +172,7 @@ app.get('/Metadata',
 );
 
 app.get('/User', function (req, res) {
-    res.send(req.user);
+    res.send(req.user == null);
 });
 
 app.get('/Session', function (req, res) {
