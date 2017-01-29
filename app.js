@@ -14,10 +14,11 @@ dotenv.load();
 var usersaml;
 
 passport.serializeUser(function (user, done) {
+    /*
     usersaml = {};
     usersaml.nameID = user['issuer']['_'];
     usersaml.nameIDFormat = user['issuer']['$'];
-
+*/
     //console.log("SERIALIZE: " + user['issuer']['_'] +": " + user['issuer']['$']);
 
     done(null, user);
@@ -61,7 +62,9 @@ var samlStrategy = new saml.Strategy({
     isPassive: false,
     additionalParams: {}
 }, function (profile, done) {
-    console.log(profile);
+    usersaml = {};
+    usersaml.nameID = profile['issuer']['_'];
+    usersaml.nameIDFormat = profile['issuer']['$'];
     return done(null, profile);
 });
 
