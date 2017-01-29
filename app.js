@@ -176,13 +176,7 @@ app.get('/body', function(req, res) {
 });
 
 app.get('/cookies', function(req, res) {
-    console.log("COOKIES = " + req.cookies)
     res.send(req.cookies);
-})
-
-app.get('/signedcookies', function(req, res) {
-    console.log("SIGNED COOKIES = " +req.signedCookies);
-    res.send(req.signedCookies);
 })
 
 //general error handler
@@ -243,6 +237,8 @@ passport.logoutSaml = function (req, res) {
         req.user = {};
         req.user.nameID = usersaml.nameID;
         req.user.nameIDFormat = usersaml.nameIDFormat;
+
+        console.log("ID: " + usersaml.nameID + "; Format: " + usersaml.nameIDFormat);
 
         samlStrategy.logout(req, function (err, request) {
             if (!err) {
