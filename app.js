@@ -82,7 +82,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 function ensureAuthenticated(req, res, next) {
-    console.log(req.user != null)
+    //console.log(req.user != null)
     if (req.isAuthenticated() && (req.user != null)) {
         return next();
     }
@@ -135,9 +135,8 @@ app.get('/secure',
 );
 
 app.get('/login',
-    passport.authenticate('saml', { failureRedirect: '/login/fail' }),
+    passport.authenticate('saml', {session: false, failureRedirect: '/login/fail' }),
     function (req, res) {
-        console.log(req.user != null);
         res.redirect('/');
     }
 );
