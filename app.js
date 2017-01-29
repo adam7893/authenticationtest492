@@ -82,6 +82,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 function ensureAuthenticated(req, res, next) {
+    console.log(req.user != null)
     if (req.isAuthenticated() && (req.user != null)) {
         return next();
     }
@@ -102,7 +103,7 @@ app.get('/', function (req, res) {
     /*var dummyUser = "John Doe";
     var testBool = false;*/
 
-    if (req.isAuthenticated()) {
+    if (req.isAuthenticated() && (req.user != null)) {
         // User is logged in
         list = [{ user: req.user["urn:oid:0.9.2342.19200300.100.1.1"] }];
         partialPage = fs.readFileSync('public/authenticated.html').toString();
@@ -172,7 +173,7 @@ app.get('/Metadata',
 );
 
 app.get('/User', function (req, res) {
-    res.send(req.user == null);
+    res.send(req.user != null);
 });
 
 app.get('/Session', function (req, res) {
