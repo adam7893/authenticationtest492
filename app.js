@@ -62,8 +62,12 @@ var samlStrategy = new saml.Strategy({
     forceAuthn: true,
     */
     isPassive: false,
-    additionalParams: {}
-}, function (profile, done) {
+    additionalParams: {},
+    passReqToCallback: true
+}, function (req, profile, done) {
+    if (!req.user) {
+        res.redirect('/login');
+    }
     usersaml = {};
     usersaml.nameID = profile['issuer']['_'];
     usersaml.nameIDFormat = profile['issuer']['$'];
