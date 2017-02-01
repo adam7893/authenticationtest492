@@ -13,7 +13,14 @@ var PiwikTracker = require('piwik-tracker');
 
 var baseUrl = 'https://authenticationtest492.herokuapp.com';
 var piwik = new PiwikTracker(1, baseUrl + "/piwik.php");
-piwik.track(baseUrl);
+piwik.track({
+    url: baseUrl,
+    action_name: 'Test Action',
+    ua: 'Node.js v0.10.24',
+    cvar: JSON.stringify({
+        '1': ['name', 'value']
+    })
+});
 
 dotenv.load();
 
