@@ -4,14 +4,8 @@ module.exports = function (parameters) {
     var fs = parameters['fs'];
     var passport = parameters['passport'];
     var samlStrategy = parameters['samlStrategy'];
-    var piwik = parameters['piwik'];
 
     var usersaml;
-
-    app.get('/piwik', function (req, res) {
-        var tracker = piwik.getTracker('https://authenticationtest492.herokuapp.com', 1);
-        res.send(tracker.getVisitorInfo());
-    })
 
     function ensureAuthenticated(req, res, next) {
         //console.log(req.user != null)

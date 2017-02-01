@@ -25,7 +25,6 @@ piwik.track({
 dotenv.load();
 
 
-
 /*
     TODO: try SAML2-js??
     https://github.com/Clever/saml2
@@ -97,13 +96,19 @@ app.use(session({ secret: "secret" }));
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.get('/piwik', function(req, res) {
+    //var tracker = piwik.getTracker('https://authenticationtest492.herokuapp.com', 1);
+    console.log(piwik);
+    console.log(piwik["_eventsCount"]);
+    res.send(404);
+})
+
 var parameters = {
     'app': app,
     'Mustache': Mustache, 
     'fs': fs,
     'passport': passport,
-    'samlStrategy': samlStrategy,
-    'piwik': PiwikTracker
+    'samlStrategy': samlStrategy
 }
 
 require('./public/routes.js')(parameters);
