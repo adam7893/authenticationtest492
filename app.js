@@ -12,7 +12,7 @@ var Mustache = require('mustache');
 var PiwikTracker = require('piwik-tracker');
 
 var baseUrl = 'https://authenticationtest492.herokuapp.com';
-var piwik = new PiwikTracker(1, baseUrl);
+var piwik = new PiwikTracker(1, baseUrl + "/piwik.php");
 piwik.track({
     url: baseUrl,
     action_name: 'Test Action',
