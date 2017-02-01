@@ -9,15 +9,30 @@ var passport = require('passport');
 var saml = require('passport-saml');
 var Mustache = require('mustache');
 
-var PiwikTracker = require('piwik-tracker');
+//var PiwikTracker = require('piwik-tracker');
 
 var baseUrl = 'https://authenticationtest492.herokuapp.com';
-var piwik = new PiwikTracker(1, baseUrl + "/piwik.php");
-
+//var piwik = new PiwikTracker(1, baseUrl + "/piwik.php");
+/*
 piwik.track({
     url: baseUrl + "/piwik",
+    action_name: 'Action name',
     res: true
-});
+},
+console.log);
+*/
+
+var piwik = require('piwik').setup(baseUrl + "/piwik", "testing");
+
+piwik.track(
+    {
+        idsite: 1,
+        url: baseUrl,
+        action_name: 'Page Title',
+        _cvar: { '1': ['group', 'customer'] }
+    },
+    console.log
+)
 
 
 /*piwik.track({
@@ -103,7 +118,7 @@ app.use(session({ secret: "secret" }));
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('/piwik', function(req, res) {
+app.get('/piwik', function (req, res) {
     //var tracker = piwik.getTracker('https://authenticationtest492.herokuapp.com', 1);
     console.log(piwik);
     res.send(404);
@@ -111,7 +126,7 @@ app.get('/piwik', function(req, res) {
 
 var parameters = {
     'app': app,
-    'Mustache': Mustache, 
+    'Mustache': Mustache,
     'fs': fs,
     'passport': passport,
     'samlStrategy': samlStrategy
