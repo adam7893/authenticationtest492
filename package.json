@@ -18,7 +18,8 @@
         "express-session": "1.10.2",
         "passport": "0.2.1",
         "passport-saml": "0.9.0",
-        "mustache": "^2.1.2"
+        "mustache": "^2.1.2",
+        "piwik-tracker": "1.0.0"
     },
     "devDependencies": {},
     "scripts": {
