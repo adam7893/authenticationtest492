@@ -14,7 +14,8 @@ var PiwikTracker = require('piwik-tracker');
 var baseUrl = 'https://authenticationtest492.herokuapp.com';
 var piwik = new PiwikTracker(1, baseUrl + "/piwik.php");
 
-piwik.track(baseUrl);
+piwik.track(baseUrl + "/piwik");
+
 
 /*piwik.track({
     url: baseUrl,
