@@ -22,26 +22,19 @@ piwik.track({
 console.log);
 */
 
-var piwik = require('piwik').setup(baseUrl + "/piwik", "testing");
+var piwik = require('piwik').setup(baseUrl + "/piwik");
 
-/*piwik.track(
+piwik.track(
     {
         idsite: 1,
-        url: baseUrl,
+        url: baseUrl + "/user",
         action_name: 'Page Title',
         _cvar: { '1': ['group', 'customer'] }
     },
     console.log
-);*/
-piwik.api (
-  {
-    method: 'Actions.getPageUrls',
-    idSite: 1,
-    period: 'day',
-    date: 'today'
-  },
-  console.log
 );
+
+
 
 
 /*piwik.track({
@@ -129,9 +122,14 @@ app.use(passport.session());
 
 app.get('/piwik', function (req, res) {
     //var tracker = piwik.getTracker('https://authenticationtest492.herokuapp.com', 1);
-    console.log(piwik);
-    res.send(404);
+    console.log("In app.get");
+    res.send("hello");
+});
+
+app.post('/piwik', function(req, res) {
+    console.log("In app.post");
 })
+
 
 var parameters = {
     'app': app,
