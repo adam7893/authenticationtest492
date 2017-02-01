@@ -1,6 +1,9 @@
-module.exports = function (app, config, passport, samlStrategy) {
-    var fs = config['fs'];
-    var Mustache = config['Mustache'];
+module.exports = function (parameters) {
+    var app = parameters['app'];
+    var Mustache = parameters['Mustache'];
+    var fs = parameters['fs'];
+    var passport = parameters['passport'];
+    var samlStrategy = parameters['samlStrategy'];
     var usersaml;
 
     function ensureAuthenticated(req, res, next) {

@@ -11,11 +11,9 @@ var Mustache = require('mustache');
 
 var PiwikTracker = require('piwik-tracker');
 
-var baseUrl = 'https://authenticationtest492.herokupapp.com';
-var piwik = new PiwikTracker(1, "https://authenticationtest492.herokuapp.com/piwik.php");
+var baseUrl = 'https://authenticationtest492.herokuapp.com';
+var piwik = new PiwikTracker(1, baseUrl + "/piwik.php");
 piwik.track(baseUrl);
-
-var config = {'Mustache': Mustache, 'fs': fs};
 
 dotenv.load();
 
@@ -43,7 +41,7 @@ passport.deserializeUser(function (user, done) {
     done(null, user);
 });
 
-var CALLBACK_URL = "https://authenticationtest492.herokuapp.com/login/callback";
+var CALLBACK_URL = baseUrl + "/login/callback";
 var ENTRY_POINT = "https://idp.testshib.org/idp/profile/SAML2/Redirect/SSO";
 var ISSUER = "localhost";
 
@@ -51,7 +49,7 @@ var ISSUER = "localhost";
 // chained url here?
 var LOGOUT_URL = "https://www.testshib.org/Shibboleth.sso/Logout";
 //var LOGOUT_URL = "https://authenticationtest492.herokuapp.com/logout?return=https://www.testshib.org/Shibboleth.sso/Logout";
-var LOGOUT_CALLBACK_URL = "https://authenticationtest492.herokuapp.com/logout/callback";
+var LOGOUT_CALLBACK_URL = baseUrl + "/logout/callback";
 
 var samlStrategy = new saml.Strategy({
     // URL that goes from the Identity Provider -> Service Provider
@@ -92,8 +90,15 @@ app.use(session({ secret: "secret" }));
 app.use(passport.initialize());
 app.use(passport.session());
 
-require('./public/routes.js')(app, config, passport, samlStrategy);
+var parameters = {
+    'app': app,
+    'Mustache': Mustache, 
+    'fs': fs,
+    'passport': passport,
+    'samlStrategy': samlStrategy
+}
 
+require('./public/routes.js')(parameters);
 
 var port = process.env.PORT || 8000;
 var server = app.listen(port, function () {
