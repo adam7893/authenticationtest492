@@ -12,7 +12,7 @@ var Mustache = require('mustache');
 var PiwikTracker = require('piwik-tracker');
 
 var baseUrl = 'https://authenticationtest492.herokuapp.com';
-var piwik = new PiwikTracker(1, baseUrl + "/piwik.php");
+var piwik = new PiwikTracker(1, baseUrl);
 piwik.track({
     url: baseUrl,
     action_name: 'Test Action',
@@ -99,7 +99,6 @@ app.use(passport.session());
 app.get('/piwik', function(req, res) {
     //var tracker = piwik.getTracker('https://authenticationtest492.herokuapp.com', 1);
     console.log(piwik);
-    console.log(piwik["_eventsCount"]);
     res.send(404);
 })
 
