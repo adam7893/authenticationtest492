@@ -102,7 +102,8 @@ var parameters = {
     'Mustache': Mustache, 
     'fs': fs,
     'passport': passport,
-    'samlStrategy': samlStrategy
+    'samlStrategy': samlStrategy,
+    'piwik': piwik
 }
 
 require('./public/routes.js')(parameters);
