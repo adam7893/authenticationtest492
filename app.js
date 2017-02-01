@@ -24,7 +24,7 @@ console.log);
 
 var piwik = require('piwik').setup(baseUrl + "/piwik", "testing");
 
-piwik.track(
+/*piwik.track(
     {
         idsite: 1,
         url: baseUrl,
@@ -32,7 +32,16 @@ piwik.track(
         _cvar: { '1': ['group', 'customer'] }
     },
     console.log
-)
+);*/
+piwik.api (
+  {
+    method: 'Actions.getPageUrls',
+    idSite: 1,
+    period: 'day',
+    date: 'today'
+  },
+  console.log
+);
 
 
 /*piwik.track({
