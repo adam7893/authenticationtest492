@@ -103,7 +103,7 @@ var parameters = {
     'fs': fs,
     'passport': passport,
     'samlStrategy': samlStrategy,
-    'piwik': piwik
+    'piwik': PiwikTracker
 }
 
 require('./public/routes.js')(parameters);
