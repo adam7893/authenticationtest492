@@ -70,6 +70,7 @@ module.exports = function (parameters) {
     app.post('/login/callback',
         passport.authenticate('saml', { session: true, failureRedirect: '/login/fail' }),
         function (req, res) {
+            console.log("login/callback")
             /*
                 User information in: req["user"]
             
