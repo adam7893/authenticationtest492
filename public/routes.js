@@ -63,6 +63,8 @@ module.exports = function (parameters) {
     app.get('/login',
         passport.authenticate('saml', { session: true, failureRedirect: '/login/fail' }),
         function (req, res) {
+            console.log("***login req: " + req);
+            console.log("***login res: " + res);
             res.redirect('/');
         }
     );
@@ -70,7 +72,8 @@ module.exports = function (parameters) {
     app.post('/login/callback',
         passport.authenticate('saml', { session: true, failureRedirect: '/login/fail' }),
         function (req, res) {
-            console.log("login/callback")
+            console.log("**********logout req: " + req);
+            console.log("**********logout res: " + res);
             /*
                 User information in: req["user"]
             

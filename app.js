@@ -62,7 +62,7 @@ passport.serializeUser(function (user, done) {
     usersaml.nameIDFormat = user['issuer']['$'];
 */
     //console.log("SERIALIZE: " + user['issuer']['_'] +": " + user['issuer']['$']);
-    console.log("serializeUser");
+    //console.log("serializeUser");
     done(null, user);
 });
 
@@ -70,7 +70,7 @@ passport.serializeUser(function (user, done) {
 
 passport.deserializeUser(function (user, done) {
     done(null, user);
-    console.log("deserializeUser")
+    //console.log("deserializeUser")
 });
 
 var CALLBACK_URL = baseUrl + "/login/callback";
@@ -108,7 +108,7 @@ var samlStrategy = new saml.Strategy({
     usersaml = {};
     usersaml.nameID = profile['issuer']['_'];
     usersaml.nameIDFormat = profile['issuer']['$'];
-    console.log("function(profile,done)");
+    //console.log("function(profile,done)");
     return done(null, profile);
 });
 
