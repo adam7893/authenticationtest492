@@ -154,6 +154,8 @@ var parameters = {
             req.user.nameID = usersaml.nameID;
             req.user.nameIDFormat = usersaml.nameIDFormat;
 
+            res.clearCookies('connect.sid');
+
             //console.log("ID: " + usersaml.nameID + "; Format: " + usersaml.nameIDFormat);
 
             samlStrategy.logout(req, function (err, request) {
