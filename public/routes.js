@@ -20,7 +20,7 @@ module.exports = function (parameters) {
     }
 
     app.get('/loginCallback', function(req, res) {
-        res.send(loginCallbackContent);
+        res.send(JSON.stringify(loginCallbackContent));
     })
 
     var homePage = fs.readFileSync('public/home.html').toString();
