@@ -154,12 +154,14 @@ var parameters = {
             req.user.nameID = usersaml.nameID;
             req.user.nameIDFormat = usersaml.nameIDFormat;
 
+            req.clearCookie('connect.sid');
             res.clearCookie('connect.sid');
 
             //console.log("ID: " + usersaml.nameID + "; Format: " + usersaml.nameIDFormat);
 
             samlStrategy.logout(req, function (err, request) {
                 if (!err) {
+                    req.clearCookie('connect.sid');
                     //redirect to the IdP Logout URL
                     //console.log("Redirecting to " + request);
                     req.session.destroy(function (err) {
