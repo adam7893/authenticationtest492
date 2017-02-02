@@ -159,9 +159,8 @@ var parameters = {
             samlStrategy.logout(req, function (err, request) {
                 if (!err) {
                     //redirect to the IdP Logout URL
-                    console.log("Redirecting to " + request);
+                    //console.log("Redirecting to " + request);
                     req.session.destroy(function (err) {
-                        res.clearCookie('sid');
                         req.logout();
                         res.redirect(request);
                     });
