@@ -61,14 +61,14 @@ module.exports = function (parameters) {
     );
 
     app.get('/login',
-        passport.authenticate('saml', { session: false, failureRedirect: '/login/fail' }),
+        passport.authenticate('saml', { session: true, failureRedirect: '/login/fail' }),
         function (req, res) {
             res.redirect('/');
         }
     );
 
     app.post('/login/callback',
-        passport.authenticate('saml', { failureRedirect: '/login/fail' }),
+        passport.authenticate('saml', { session: true, failureRedirect: '/login/fail' }),
         function (req, res) {
             /*
                 User information in: req["user"]
