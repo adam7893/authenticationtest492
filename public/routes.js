@@ -6,7 +6,6 @@ module.exports = function (parameters) {
     var samlStrategy = parameters['samlStrategy'];
 
     var usersaml;
-    var loginCallbackContent;
 
     function ensureAuthenticated(req, res, next) {
         //console.log(req.user != null)
@@ -80,8 +79,6 @@ module.exports = function (parameters) {
             var redirect = samlStrategy['Redirect'];
             res.redirect(redirect);
             */
-
-            loginCallbackContent = req;
 
             res.redirect('/');  //changed just for ease of testing
         }
