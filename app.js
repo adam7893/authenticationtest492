@@ -159,6 +159,8 @@ var parameters = {
                     //redirect to the IdP Logout URL
                     console.log("Redirecting to " + request);
                     req.session.destroy(function (err) {
+                        req.clearCookies('connect.sid');
+                        res.clearCookies('connect-sid');
                         req.logout();
                         res.redirect(request);
                     });
