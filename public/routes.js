@@ -90,10 +90,8 @@ module.exports = function (parameters) {
             //console.log("**********callback req: " + req);
             //console.log("**********callback res: " + res);
 
-            console.log("*****callback req cookies");
-            for (var key in  + req['cookies']) {
-                console.log("***" + key + ";;;" + req['cookies'][key]);
-            }
+            console.log("*****callback req cookies: " + req['cookies']);
+            console.log(Object.keys(req['cookies']));
             /*
                 User information in: req["user"]
             
