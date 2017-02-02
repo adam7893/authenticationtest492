@@ -140,6 +140,37 @@ var parameters = {
     'passport': passport,
     'samlStrategy': samlStrategy
 }
+    app.get('/logout', function (req, res) {
+        passport.logoutSaml(req, res);
+    })
+
+
+    passport.logoutSaml = function (req, res) {
+        if (usersaml != null) {
+            //Here add the nameID and nameIDFormat to the user if you stored it someplace.
+            req.user = {};
+            req.user.nameID = usersaml.nameID;
+            req.user.nameIDFormat = usersaml.nameIDFormat;
+
+            //console.log("ID: " + usersaml.nameID + "; Format: " + usersaml.nameIDFormat);
+
+            samlStrategy.logout(req, function (err, request) {
+                if (!err) {
+                    //redirect to the IdP Logout URL
+                    console.log("Redirecting to " + request);
+                    req.session.destroy(function (err) {
+                        req.logout();
+                        res.redirect(request);
+                    });
+                    /*
+                    req.session.destroy();
+                    res.clearCookie("connect.sid");
+                    res.redirect(request);
+                    */
+                }
+            });
+        }
+    }
 
 require('./public/routes.js')(parameters);
 
