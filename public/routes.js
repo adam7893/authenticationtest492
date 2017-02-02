@@ -45,6 +45,21 @@ module.exports = function (parameters) {
                 partial: partialPage
             });
 
+        /*for (var key in req) {
+            console.log();
+        }*/
+
+        //console.log(req['cookies']);
+
+        /*fs.writeFile("req.txt", req.toString(), function(err) {
+            if (err) {
+                return console.log(err);
+            }
+            console.log("success");
+        })*/
+        //console.log(req);
+        //console.log(res);
+
         res.end(html);
     }
     );
@@ -72,8 +87,10 @@ module.exports = function (parameters) {
     app.post('/login/callback',
         passport.authenticate('saml', { session: true, failureRedirect: '/login/fail' }),
         function (req, res) {
-            console.log("**********logout req: " + req);
-            console.log("**********logout res: " + res);
+            //console.log("**********callback req: " + req);
+            //console.log("**********callback res: " + res);
+
+            console.log("*****callback req cookies" + req['cookies']);
             /*
                 User information in: req["user"]
             
