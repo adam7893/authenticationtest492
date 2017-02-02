@@ -154,7 +154,7 @@ var parameters = {
             req.user.nameID = usersaml.nameID;
             req.user.nameIDFormat = usersaml.nameIDFormat;
 
-            req.clearCookies('connect.sid');
+            res.clearCookie('connect.sid');
 
             //console.log("ID: " + usersaml.nameID + "; Format: " + usersaml.nameIDFormat);
 
