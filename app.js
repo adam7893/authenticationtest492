@@ -24,6 +24,7 @@ console.log);
 
 //var piwik = require('piwik').setup(baseUrl + "/piwik");
 
+/*
 var piwik = require('piwik').setup("http://localhost:8000");
 
 piwik.api(
