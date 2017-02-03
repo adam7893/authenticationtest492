@@ -143,8 +143,7 @@ var parameters = {
     'samlStrategy': samlStrategy
 }
     app.get('/logout', function (req, res) {
-        console.log("*****req: " + req.cookies);
-        console.log("*****res: " + res.cookies);
+        console.log("*****req: " + Object.keys(req.cookies));
         passport.logoutSaml(req, res);
     })
 
