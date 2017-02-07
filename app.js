@@ -9,9 +9,6 @@ var passport = require('passport');
 var saml = require('passport-saml');
 var Mustache = require('mustache');
 
-//var PiwikTracker = require('piwik-tracker');
-
-var baseUrl = 'https://authenticationtest492.herokuapp.com';
 //var piwik = new PiwikTracker(1, baseUrl + "/piwik.php");
 /*
 piwik.track({
@@ -22,8 +19,26 @@ piwik.track({
 console.log);
 */
 
-//var piwik = require('piwik').setup(baseUrl + "/piwik");
+var baseUrl = 'https://authenticationtest492.herokuapp.com';
+/*
+var PiwikTracker = require('piwik-tracker');
 
+
+
+var piwik = new PiwikTracker(1, baseUrl + '/piwik.php');
+piwik.track(baseUrl);
+*/
+
+/*
+var piwik = require('piwik').setup(baseUrl + "/piwik", 'abc123');
+
+piwik.track(
+    {
+        url: baseUrl
+    }
+)
+
+*/
 /*
 var piwik = require('piwik').setup("http://localhost:8000");
 
@@ -46,6 +61,7 @@ piwik.api(
         '1': ['name', 'value']
     })
 });*/
+
 
 dotenv.load();
 
@@ -144,9 +160,9 @@ var parameters = {
 }
     app.get('/logout', function (req, res) {
         //console.log("*****req: " + Object.keys(req.cookies));
-        for (var key in req.cookies) {
+        /*for (var key in req.cookies) {
             console.log("***req: [" + key + ", " + req.cookies[key] + "]")
-        }
+        }*/
         passport.logoutSaml(req, res);
     })
 
@@ -182,6 +198,8 @@ var parameters = {
     }
 
 require('./public/routes.js')(parameters);
+
+app.use(express.static('piwik'));
 
 var port = process.env.PORT || 8000;
 var server = app.listen(port, function () {

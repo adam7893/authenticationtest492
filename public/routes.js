@@ -78,8 +78,8 @@ module.exports = function (parameters) {
     app.get('/login',
         passport.authenticate('saml', { session: true, failureRedirect: '/login/fail' }),
         function (req, res) {
-            console.log("***login req: " + req);
-            console.log("***login res: " + res);
+            //console.log("***login req: " + req);
+            //console.log("***login res: " + res);
             res.redirect('/');
         }
     );
@@ -90,7 +90,7 @@ module.exports = function (parameters) {
             //console.log("**********callback req: " + req);
             //console.log("**********callback res: " + res);
 
-            console.log("*****callback req cookies: " + req['cookies']['connect.sid']);
+            //console.log("*****callback req cookies: " + req['cookies']['connect.sid']);
             /*
                 User information in: req["user"]
             
